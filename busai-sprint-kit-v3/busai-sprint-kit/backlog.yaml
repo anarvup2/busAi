@@ -1,0 +1,885 @@
+# BusAI / VV-Co backlog — single source of truth for Claude Code and people.
+# Four one-week sprints, one per phase, built by Claude Code in auto mode.
+#
+# tickets[].status: todo | in_progress | review | blocked | done | dropped
+#   Claude Code sets in_progress, review (merged into sprint branch) and blocked.
+#   People set done (after merging the sprint branch to main) and dropped.
+# tickets[].depends_on: other tickets; satisfied when status is review or done.
+# tickets[].needs_input: human inputs (H-xx). NOT a start blocker: build against sim/
+#   and fixtures/; if an acceptance item can only pass with the input, mark the ticket
+#   blocked and explain in BLOCKED.md.
+# Briefs in tasks/ are generated: python tools/render_briefs.py
+
+version: 3
+plan_doc: "https://claude.ai/code/artifact/c6a73b2f-8fd0-4423-b280-ea61f11c69a1"
+source_docs:         # VV-Co working docs by Apurva Oza, Basecamp project "HBO + ABO + UV", Docs & Files
+  part_b_key_aspects: "https://app.basecamp.com/4531610/buckets/49226321/documents/10399563327"
+  phased_approach_review: "https://app.basecamp.com/4531610/buckets/49226321/documents/10399537046"
+  part_a_technical_architecture: "https://app.basecamp.com/4531610/buckets/49226321/documents/10399548939"
+mode: auto           # Claude Code merges green tickets into sprint/<id>; people merge sprint/<id> to main on Friday
+
+sprints:
+  - {id: S1, phase: 1, name: "Phase 1 — clips and manual review", start: 2026-10-19, end: 2026-10-23, gate: G1, goal: "Pilot buses record a clip at every stop; a manager can review a trip against ticket ticks; G1 evidence pack ready Friday"}
+  - {id: S2, phase: 2, name: "Phase 2 — nightly AI count",         start: 2026-10-26, end: 2026-10-30, goal: "Every pilot clip is counted overnight; managers see AI counts vs tickets with ranked flags"}
+  - {id: S3, phase: 3, name: "Phase 3 — door counters",            start: 2026-11-02, end: 2026-11-06, goal: "FOORIR counts land in crossing_event and the same report; nightly retrain loop running"}
+  - {id: S4, phase: 4, name: "Phase 4 — edge vision",              start: 2026-11-09, end: 2026-11-13, goal: "Same model and rule run on an RK3588 or Pi 5 + Hailo-8L box; only crossing events leave the bus"}
+
+gates:
+  - {id: G1, name: "Access",         date: 2026-10-23, estimate: false, pass: "Warner sub stream (streamid 0) measured at <=300 kbps with >=640x360 and >=5 fps; time to first frame <=3 s after pre-connect; vendor relay residency acceptable (H-14); Katch events within 30 s", on_fail: "Sprint 2 adds the on-bus clip gateway (LAN/ONVIF) for the affected fleet", evidence: S1-05, result: null}
+  - {id: G2, name: "First operator", date: 2026-11-06, estimate: false, pass: "One operator reviews flagged trips weekly", on_fail: "Fix ranking before trusting AI flags", evidence: S1-11, result: null}
+  - {id: G3, name: "Accuracy",       date: 2026-11-27, estimate: true,  pass: ">=85% per-stop boardings on top-down views; >=80% of flags confirmed", on_fail: "Add door cameras or move Phase 3 counters to the lead; hold Phase 4 fitting", evidence: S4-07, result: null}
+  - {id: G4, name: "Pricing",        date: 2026-12-18, estimate: true,  pass: "Operator accepts >=Rs500/bus-month or success fee; recovered fares > 3x price", on_fail: "Reposition as tender-grade Phase 3 product", evidence: S4-07, result: null}
+
+inputs:   # only people can supply these; Claude Code never marks them done
+  - {id: H-01, needed_by: 2026-10-16, status: todo, title: "Order 2–4 FOORIR HX-CCD22 counters and 2 edge kits (Pi 5 + AI Kit or RK3588, 9–36 V DC-DC, enclosure); record FOORIR's quote, MOQ, lead time, warranty text and BIS R-number"}
+  - {id: H-02, needed_by: 2026-10-19, status: todo, title: "Pilot access: Warner cloud account + device IDs and device passwords for the 6 cameras on 3 pilot buses; Katch sandbox/topic (Parth); all injected as env vars; Warner SDK zip in the private bucket"}
+  - {id: H-03, needed_by: 2026-10-19, status: todo, title: "Cloud account in an Indian region with budget cap; staging-only deploy role; night GPU quota"}
+  - {id: H-04, needed_by: 2026-10-19, status: todo, title: "One day of Katch events for 3 buses, exported by Parth"}
+  - {id: H-05, needed_by: 2026-10-23, status: todo, title: "Pilot operator named (10 buses, routes, city); operator letter; DPDP processor agreement signed between VV-Co and the operator (signatory decided); notice stickers on 10 buses; operator announces the audit policy to conductors; sign the data-flow note"}
+  - {id: H-06, needed_by: 2026-10-26, status: todo, title: "Two depot managers review flagged trips weekly"}
+  - {id: H-07, needed_by: 2026-10-26, status: todo, title: "Ground truth: >=100 stops counted by people in the tool, each twice"}
+  - {id: H-08, needed_by: 2026-10-28, status: todo, title: "Parth embeds the review WebView + SSO in the Katch Android app"}
+  - {id: H-09, needed_by: 2026-10-28, status: todo, title: "Check ~10% of auto-labels (~400 frames)"}
+  - {id: H-10, needed_by: 2026-11-04, status: todo, title: "Fit FOORIR units (door contact on DI); run the commissioning script"}
+  - {id: H-11, needed_by: 2026-11-06, status: todo, title: "BIS CRS / ER-01 advice on the depth-only counter SKU"}
+  - {id: H-12, needed_by: "after G3", status: todo, title: "Fit edge boxes on two pilot buses"}
+  - {id: H-13, needed_by: "every Friday", status: todo, title: "Review and merge the sprint branch; G1–G4 calls and GPU choice from evidence packs"}
+  - {id: H-14, needed_by: 2026-10-21, status: todo, title: "Warner answers: relay and cloud hosting location, settable sub-stream encoder, server-side SDK or RTSP, token rotation, LAN password derivation, limited-scope account (questions in docs/vendor/warner-h5sdk.md)"}
+  - {id: H-15, needed_by: 2026-10-22, status: todo, title: "Run tools/commission_warner.py --apply on the 6 pilot cameras: set device passwords, alarm push off, on-camera boxes off, audio off, continuous sub-stream SD recording on"}
+  - {id: H-16, needed_by: 2026-10-21, status: todo, title: "eSIM data plan per pilot bus today and the cost of ~16–20 GB/month if it is smaller (Parth); the biggest lever on cost per bus"}
+  - {id: H-17, needed_by: 2026-10-21, status: todo, title: "Camera positions per bus type on the pilot fleet: does either camera see a door from above? A photo of each view and the door count per bus (Parth)"}
+  - {id: H-18, needed_by: 2026-10-23, status: todo, title: "Pilot success metrics agreed with the pilot operator before deployment, as the charter requires: VDV 457-style per-stop protocol, 85 % / 95 % thresholds, KPI targets in docs/business-brief.md (KParth + Upsquare)"}
+  - {id: H-19, needed_by: 2026-11-06, status: todo, title: "Pricing inputs for G4: Katch's current per-bus subscription to operators, and the pilot pricing hypothesis (per bus-month, share of recovered fares, or both)"}
+  - {id: H-20, needed_by: 2026-10-26, status: todo, title: "Shareholders' agreement points that change the code: operator permission (in the processor agreement) to train models on its footage; VV-Co owns the IP created for it; licence terms for pre-existing Katch and Upsquare code"}
+  - {id: H-21, needed_by: "after G1", status: todo, title: "Extend read-only pilot access from 3 to all 10 pilot buses and commission their cameras (H-15 steps); KPI: 10 buses live by week 12"}
+
+tickets:
+
+# ═════════════════════════ Sprint 1 — Phase 1: clips and manual review ═════════════════════════
+  - id: S1-01
+    sprint: S1
+    owner: claude_code
+    status: todo
+    needs_input: [H-03]
+    title: "Scaffold: Python 3.12 monorepo, docker-compose, CI, secret scanning, Terraform for staging in an Indian region"
+    done_when: "make dev green; staging deploys"
+    brief:
+      context: "Nothing exists yet. Create the layout in CLAUDE.md so every later ticket has a home, plus a staging environment Claude Code can deploy to."
+      deliver:
+        - "Directory layout from CLAUDE.md; pyproject.toml (uv), ruff, mypy, pytest"
+        - "infra/docker-compose.yml: postgres:16, minio, mosquitto, keycloak; healthchecks"
+        - "Makefile: dev, test, lint, replay, deploy-staging"
+        - "CI: lint, types, tests, gitleaks secret scan, tools/render_briefs.py --check"
+        - "infra/terraform/staging: Indian region only (ap-south-1 or equivalent), budget alarm, object store with 30-day lifecycle, no prod resources"
+        - "BLOCKED.md and DECISIONS.md at repo root with headings only"
+        - "Node 20 + Playwright (headless Chromium) in the toolchain for the Warner bridge (S1-14)"
+        - "vendor/ git-ignored; make vendor fetches the Warner SDK zip from the private bucket and checks vendor/warner_h5sdk.sha256"
+      acceptance:
+        - "make dev brings every service healthy on a clean machine"
+        - "Secret scan fails CI when a file contains 'hf123456'"
+        - "CI fails if any file under vendor/warner_h5sdk/ is committed"
+        - "terraform plan for staging shows only the Indian region"
+        - "make deploy-staging succeeds (needs H-03; otherwise blocked with plan output attached)"
+      out_of_scope: ["Production environment", "Business logic"]
+
+  - id: S1-02
+    sprint: S1
+    owner: claude_code
+    status: todo
+    depends_on: [S1-01]
+    title: "Schema v0: the 10 entities plus operator, audit_log and review_session; operator-scoped rows; event tables partitioned by day, idempotent natural keys"
+    done_when: "Migrations apply up and down"
+    brief:
+      context: "docs/architecture-brief.md → Data model. crossing_event is shared by every phase. Each bus operator is a separate DPDP data fiduciary and VV-Co is its processor (docs/business-brief.md), so every row must be attributable to one operator from day one."
+      deliver:
+        - "db/migrations/ (Alembic): operator, vehicle, device, trip, stop_event, ticket_event, clip, crossing_event, stop_reconciliation, flag, ground_truth_count, audit_log, review_session"
+        - "operator: id, name, katch_operator_id, processor_agreement_ref, training_permitted (bool, default false), audit_policy_announced_on, plan, trial_ends_on"
+        - "operator_id on every operator-owned table (directly or through vehicle), indexed; Postgres row-level security policies keyed on a session operator_id"
+        - "flag: est_leakage_inr, recovered_inr (entered by the operator), decided_at; decision is only ever set with a reviewer_id"
+        - "review_session: reviewer_id, operator_id, trip_id, started_at, ended_at (feeds the review-effort KPI)"
+        - "device: origin_country, certification_ref (BIS R-number or none) for tender compliance reports"
+        - "Daily range partitions on ticket_event, crossing_event, stop_event + partition-maker job"
+        - "Unique natural keys for idempotent ingest (ticket_id; device+ts+direction+track_id for crossings; clip_id+model_version for AI rows)"
+        - "device.credentials_ref (text, vault path); no column holds a secret"
+      acceptance:
+        - "alembic upgrade head and downgrade base succeed in CI"
+        - "crossing_event.source enum = ai_batch, counter, edge"
+        - "Inserting the same ticket twice yields one row"
+        - "With RLS on, a session for operator A reads zero rows of operator B (tested on every operator-owned table)"
+        - "A flag decision without a reviewer_id is rejected by a constraint"
+      out_of_scope: ["TimescaleDB", "Billing integration"]
+
+  - id: S1-03
+    sprint: S1
+    owner: claude_code
+    status: todo
+    depends_on: [S1-01]
+    title: "Contracts as code: Katch events, CameraAdapter, counter contract, MQTT topic"
+    done_when: "Every fixture validates"
+    brief:
+      context: "Turn the contracts in docs/architecture-brief.md into code every service imports."
+      deliver:
+        - "contracts/katch_events.py (Pydantic v2): ticket.issued, gps.position, trip.started, trip.ended; JSON Schema export"
+        - "contracts/camera_adapter.py: abstract CameraAdapter shaped by the Warner SDK (docs/vendor/warner-h5sdk.md): preconnect(device), open_substream(device) -> FrameStream (no width/height/fps arguments; frames report actual width, height, codec, fps, timestamp), close(device), fetch_playback(device, start, end) -> FrameStream, get_time(device), capabilities(device), health(device), privacy_posture(device)"
+        - "contracts/frames.py: Frame (kind I/P, codec H264/H265, width, height, fps, ts, Annex-B bytes) — no audio type exists in the contract"
+        - "contracts/counter.py: FOORIR heartBeat and dataUpload models; normalised CounterEvent"
+        - "contracts/mqtt.py: vvco/{vehicle}/{door}/crossing topic + payload"
+        - "contracts/VERSION and CHANGELOG"
+      acceptance:
+        - "Every file under fixtures/katch and fixtures/foorir validates (skip cleanly if absent)"
+        - "Katch ms and FOORIR µs timestamps both normalise to UTC"
+      out_of_scope: ["Vendor-specific camera code"]
+
+  - id: S1-04
+    sprint: S1
+    owner: claude_code
+    status: todo
+    depends_on: [S1-03]
+    needs_input: [H-04]
+    title: "Simulators: Katch replayer, fake Warner camera serving frame dumps, FOORIR device with dropout and backfill"
+    done_when: "A fixture day replays at 60x"
+    brief:
+      context: "Simulators let every service be built and tested without a bus. Until H-04 lands, generate a synthetic day clearly marked synthetic."
+      deliver:
+        - "sim/katch_replayer.py: replays fixtures/katch/<day> (or synthetic) to the webhook or topic at N x speed"
+        - "sim/fake_camera.py: CameraAdapter serving fixture Annex-B frame dumps (from S1-13, or frames cut from MP4s), with injectable Warner error codes (-2, -11, -13, -20) and a configurable time-to-first-frame"
+        - "sim/foorir_device.py: heartBeat per simulated minute, dataUpload per door-open period, dropout + backfill mode"
+        - "make replay DAY=..."
+      acceptance:
+        - "A 16-hour day replays in under 20 minutes at 60x"
+        - "Fake camera passes the CameraAdapter contract tests"
+        - "Synthetic data is tagged synthetic in every record"
+      out_of_scope: ["Video synthesis beyond looping fixture clips"]
+
+  - id: S1-05
+    sprint: S1
+    owner: claude_code
+    status: todo
+    depends_on: [S1-14]
+    needs_input: [H-02, H-14, H-16, H-17]
+    title: "G1 spike runners through the Warner bridge: sub-stream reality, time to first frame, relay path, SD playback, clock, posture, Katch latency"
+    done_when: "G1 evidence pack on Friday"
+    brief:
+      context: "The Warner SDK cannot set sub-stream resolution or fps, so G1 now measures what the camera actually sends. G1 passes if the sub stream is <=300 kbps at >=640x360 and >=5 fps, the first frame arrives <=3 s after a pre-connected stream is opened, the relay location is acceptable (H-14), and Katch events arrive within 30 s. See docs/vendor/warner-h5sdk.md."
+      deliver:
+        - "tools/spikes/warner_probe.py (drives the bridge): per camera — connect by device ID, login, open sub stream (streamid 0) and main (1) for 10 min each; record actual width, height, codec, fps, kbps; time from connect, login and open to first I-frame; P2P direct vs relayed (TURN) and the relay host reached"
+        - "SD playback probe: SreachRecord + StartPlayBack for a 30 min window; playback speed vs real time; one-search-per-device limit confirmed"
+        - "getDeviceModal capability dump (keys only, no secrets): is any sub-stream encoder setting exposed?"
+        - "tools/spikes/clock_drift.py: MQTT System.Time.TimeUtc vs frame timestamps vs Katch GPS vs server; 48 h unattended"
+        - "Privacy posture snapshot per camera (properties listed in docs/vendor/warner-h5sdk.md)"
+        - "tools/spikes/katch_latency.py: p50/p95 latency of ticket and GPS events; also checks per-ticket granularity (stop_id or lat/lon and a timestamp on every ticket) and records whether stop-level or only trip-level reconciliation is possible"
+        - "docs/spikes/G1.md: evidence pack with pass/fail per condition, measured GB per bus-day for stop-window pulls against the eSIM plan (H-16), camera view per door (top-down or oblique, from H-17) with the expected accuracy band, the weighted rubric scores, and H-14 answers when they arrive"
+      acceptance:
+        - "Probes write metrics only: no frames, audio, credentials or User.List to disk or logs"
+        - "Evidence pack generated from probe outputs by one command"
+        - "Runs on all 6 pilot cameras (needs H-02; otherwise blocked with the fake-device report attached)"
+        - "Relay residency row filled from H-14 (otherwise marked open)"
+      out_of_scope: ["Making the G1 call (H-13)", "Changing any camera setting"]
+
+  - id: S1-06
+    sprint: S1
+    owner: claude_code
+    status: todo
+    depends_on: [S1-02, S1-03, S1-04]
+    needs_input: [H-02]
+    title: "Katch events adapter: webhook with signature check or topic consumer, idempotent upserts"
+    done_when: "Replayed day, zero duplicates"
+    brief:
+      context: "Katch is the source of tickets, trips and GPS. Gate latency needs <=30 s end to end."
+      deliver:
+        - "services/ingest_katch/: webhook (HMAC verify, secret from env/vault) and optional topic consumer behind one handler"
+        - "Upserts into trip and ticket_event; GPS to an internal stream for the gate; dead-letter table"
+      acceptance:
+        - "Replaying a day twice gives identical row counts"
+        - "Bad signature → 401, nothing written"
+        - "p95 ingest lag < 5 s at 60x replay"
+        - "Connected to the Katch sandbox for a pilot bus (needs H-02)"
+      out_of_scope: ["Production Katch feed"]
+
+  - id: S1-07
+    sprint: S1
+    owner: claude_code
+    status: todo
+    depends_on: [S1-06]
+    title: "Stop-window gate: pre-connect on deceleration, window at speed 0 for > 5 s or POS events, 3 s padding, stop_event with dwell"
+    done_when: ">=95% of Katch stops matched"
+    brief:
+      context: "Record only while doors are likely open (15–30% of the day). Warner P2P connect + login + open takes time, so the gate warns the bridge early."
+      deliver:
+        - "services/gate/: emits preconnect when speed falls below a configurable threshold (default 10 km/h); opens the window when speed_kmh == 0 for > 5 s or a ticket arrives while stationary; closes on movement; 3 s padding; emits release if the bus speeds up without stopping"
+        - "stop_event rows (arrive, depart, dwell, lat, lon, nearest stop within a radius); record-window messages"
+      acceptance:
+        - "Unit tests: traffic light without tickets, stop with tickets, GPS gap, jitter near 0 km/h, slow crawl without a stop (preconnect then release)"
+        - ">=95% of Katch-attributed stops in the replayed day matched"
+        - "Preconnect leads window open by >= the time-to-first-frame measured in S1-05 (configurable; default 4 s)"
+      out_of_scope: ["Door sensor input"]
+
+  - id: S1-08
+    sprint: S1
+    owner: claude_code
+    status: todo
+    depends_on: [S1-07, S1-04, S1-14]
+    needs_input: [H-02, H-05, H-15]
+    title: "Warner camera adapter over the bridge; clip recorder (remux, no decode) with 30-day lifecycle and overnight SD fill"
+    done_when: "One clip per window on pilot buses"
+    brief:
+      context: "The clip store is what Phase 1 reviews and Phase 2 counts. ~0.6 GB per bus-day (S1-05 measures the real figure). Frames arrive from the Warner bridge as Annex-B H.264 or H.265; audio is already dropped there."
+      deliver:
+        - "services/camera_adapters/warner.py implementing CameraAdapter by talking to the bridge (S1-14) over its local socket; credentials from env/vault at call time"
+        - "services/recorder/: keeps the last GOP per open stream so a clip starts on an I-frame inside the 3 s pre-roll; remuxes Annex-B to MP4 with FFmpeg -c copy; key {operator}/{vehicle}/{date}/{trip}/{stop_event}/{door}.mp4; clip rows with codec, width, height, fps"
+        - "If codec is H.265, also writes a 360p H.264 review proxy (same lifecycle) for the Android WebView"
+        - "Overnight job: SreachRecord + StartPlayBack via the bridge for windows with no clip, serialised per device"
+      acceptance:
+        - "Simulated day: exactly one clip per window per door camera, each starting on an I-frame"
+        - "Killed worker leaves no orphan clip row"
+        - "No clip contains an audio track (tested with ffprobe)"
+        - "Pilot bus produces clips for a full duty day (needs H-02, H-05, H-15)"
+      out_of_scope: ["Inference", "Face blur (open decision)", "Any camera setting change"]
+
+  - id: S1-09
+    sprint: S1
+    owner: claude_code
+    status: todo
+    depends_on: [S1-02]
+    title: "API and auth: roles, signed clip URLs, audit row per clip view"
+    done_when: "Every clip view audited (tested)"
+    brief:
+      context: "Clips are personal data under DPDP; every access is role-checked and logged. The operator is the data fiduciary, so a user only ever sees their own operator's data. Flags are evidence for a person to decide; nothing in the product penalises a conductor automatically."
+      deliver:
+        - "services/api/: FastAPI + OIDC (Keycloak in dev; Katch SSO adapter stub)"
+        - "Roles: operator_admin, depot_manager, reviewer, annotator; conductor views for depot_manager and above"
+        - "Every request sets the session operator_id from the token; all queries run under the S1-02 row-level security"
+        - "GET /clips/{id}/url → signed URL <=5 min + audit_log row"
+        - "Endpoints: trips by day, trip detail, flags, flag decision (confirm / dismiss with reviewer_id), recovered amount entry, ground-truth entry, review_session start/end"
+      acceptance:
+        - "Every issued clip URL writes exactly one audit row (tested)"
+        - "Reviewer cannot read conductor rankings (tested)"
+        - "A token for operator A gets 404 on any trip, clip or flag of operator B (tested)"
+        - "No endpoint or job changes a flag to confirmed without a human reviewer_id (tested)"
+        - "OpenAPI schema committed"
+      out_of_scope: ["Katch SSO production wiring (H-08)"]
+
+  - id: S1-10
+    sprint: S1
+    owner: claude_code
+    status: todo
+    depends_on: [S1-09, S1-08]
+    title: "Review screen as a WebView: stop timeline, ticket ticks, fast scrub, counted-boardings entry"
+    done_when: "Playwright review passes at 360 px"
+    brief:
+      context: "Managers review on Android phones inside the Katch app (H-08). Scrub speed decides adoption, and review effort is a pilot KPI (<= 15 manager minutes per bus-week). Screen design from the Phased Approach Review: trip picker, player with timeline, stop card, trip summary."
+      deliver:
+        - "web/review/ (React + TS): trip picker (bus, date, trip, conductor, review-priority score); trip timeline with GPS stop markers, one tick per ticket, dwell; tap a stop to play its clip; 2x/4x playback"
+        - "Stop card: dwell, tickets in the stop window, counted-boardings entry, auto-computed gap; trip summary: counted boardings vs tickets, gap in ₹, one-tap 'flag conductor' or 'clear'"
+        - "Shortcuts: next stop, +1/-1 boardings, confirm; annotator mode for ground truth (boardings + alightings per door)"
+        - "review_session start/end posted automatically while a trip is open"
+        - "Embedding guide for Parth: docs/katch-webview.md"
+      acceptance:
+        - "Playwright at 360x740 completes a trip review on fixture data"
+        - "A completed review writes one review_session with a plausible duration"
+        - "H.265 clips play through their H.264 proxy; H.264 clips play directly"
+        - "Clip URLs never stored in localStorage"
+        - "Lighthouse accessibility >= 90"
+      out_of_scope: ["AI counts (S2-09)"]
+
+  - id: S1-11
+    sprint: S1
+    owner: claude_code
+    status: todo
+    depends_on: [S1-07, S1-09]
+    title: "Reconciliation v0: ticket-and-GPS trip ranking with a 1% control sample, ₹ leakage estimate, flag inbox, weekly one-page PDF"
+    done_when: "Flags fill from the replayed day"
+    brief:
+      context: "Before AI, ticket and GPS data alone rank the trips worth watching, so a manager reviews 2–3% of trips, not all of them (Phased Approach Review, 'the sampling trick'). Phase 2 later feeds the same ranking with AI counts, so nothing here is thrown away. The pitch to operators is 'recover leaked fares', so every report leads with rupees."
+      deliver:
+        - "services/reconcile/: tickets vs counted boardings per stop → stop_reconciliation; trip-level mode for operators whose tickets lack stop or time granularity (per S1-05)"
+        - "Ranking rules v0 in config: long dwell at a stop with zero tickets; revenue per km below the route's norm; a conductor whose tickets per stop sit below peers on the same route; conductor week-over-week drop"
+        - "Random control sample of 1% of trips (seeded, reproducible), marked as control and never filtered by the rules"
+        - "Leakage estimate in ₹: unticketed boardings × the median fare for that route and stop window; stored as flag.est_leakage_inr"
+        - "flag rows + status workflow; weekly one-page PDF per operator led by estimated leakage and confirmed recoveries in ₹; G2 usage log (reviews per manager per week)"
+      acceptance:
+        - "Each rule unit-tested on a hand-built trip"
+        - "On the replayed day the rules select <= 3% of trips, plus the 1% control"
+        - "Control sample is identical for the same seed and independent of rule scores"
+        - "Re-running a day is idempotent"
+        - "PDF fits one A4 page and shows ₹ figures with their basis"
+      out_of_scope: ["Learned thresholds", "Any automatic action against a conductor"]
+
+  - id: S1-12
+    sprint: S1
+    owner: claude_code
+    status: todo
+    depends_on: [S1-08]
+    title: "Retention and deletion jobs; observability with a no-clips-today alert"
+    done_when: "Back-dated clips removed; alert fires"
+    brief:
+      context: "DPDP storage limitation, and silent camera failures are the main ops risk."
+      deliver:
+        - "Daily job reconciling clip rows vs object store; alert on any object > 30 days; delete-by-clip admin path with audit"
+        - "Prometheus metrics per bus; Grafana dashboard JSON; alerts: active bus with zero clips by 12:00, ingest lag > 30 s"
+        - "Warner metrics from the bridge: P2P error codes by type (-13 offline, -20 wrong password, -12 addressing), time to first frame, relayed vs direct share, SD card state"
+        - "Daily Warner privacy-posture check (read-only MQTT gets): alert if alarm push, on-camera boxes or audio input are on, privacy mode is on, or continuous SD recording is off"
+      acceptance:
+        - "Back-dated test objects reported and removed"
+        - "Deleting a clip leaves crossing_event intact"
+        - "Simulated offline camera fires the alert; no metric label contains personal data"
+        - "Fake device with alarm push on fires the posture alert"
+      out_of_scope: ["Paging integrations"]
+
+  - id: S1-13
+    sprint: S1
+    owner: claude_code
+    status: todo
+    depends_on: [S1-08]
+    needs_input: [H-02, H-04]
+    title: "Capture sanitized fixtures from pilot access; measure GB per bus-day; draft the DPDP data-flow note, processor-agreement template and per-operator proportionality note"
+    done_when: "Fixtures committed; DPDP pack ready for H-05"
+    brief:
+      context: "Real fixtures make every later test honest. The data-flow note lists every hop video takes, for human sign-off. Under DPDP the operator is the data fiduciary and VV-Co the processor; the Madras HC (2026) proportionality test means each operator needs a short note on purpose and minimisation. Drafts only: people sign (H-05)."
+      deliver:
+        - "tools/capture_fixtures.py: 3 clips per camera view (day, night, peak) from pilot clips; strips metadata; drops clips where a face fills > 5% of frame; also saves matching Annex-B frame dumps (video only) for sim/fake_camera.py"
+        - "fixtures/katch/<day> from H-04 with conductor IDs hashed"
+        - "docs/data/egress.md: GB per bus-day from recorder bytes vs the 0.6 GB estimate"
+        - "docs/privacy/data-flow.md: every hop camera → Warner P2P relay (dvr163.com, location per H-14) → bridge → recorder → store → reviewer, plus the vendor cloud API (app-api.warner.co.in) and MQTT; region, retention, access for each; notice-sticker text in English with a slot for the regional language"
+        - "docs/privacy/processor-agreement-template.md: roles (operator fiduciary, VV-Co processor, Katch sub-processor), purposes (revenue assurance, safety), 30-day video retention, aggregated counts only, access logging, breach reporting, and an explicit clause on using footage to train models (H-20)"
+        - "docs/privacy/proportionality-note-template.md: per-operator purpose, necessity, minimisation and retention; no age or gender inference; no automatic penalties from AI counts"
+      acceptance:
+        - "No names, phone numbers or close-up faces in fixtures (automated check)"
+        - "Data-flow note covers every service that touches a clip"
+        - "Every placeholder a person must fill is marked TODO(H-05) or TODO(H-20)"
+      out_of_scope: ["Signing the note (H-05)"]
+
+  - id: S1-14
+    sprint: S1
+    owner: claude_code
+    status: todo
+    depends_on: [S1-01, S1-03]
+    needs_input: [H-02]
+    title: "Warner bridge: headless Chromium running the vendor H5 SDK; pre-connect, open sub stream, playback and MQTT gets; video-only Annex-B frames to Python over a local socket; commissioning script"
+    done_when: "10 min live sub stream from a pilot camera reaches the recorder"
+    brief:
+      context: "The vendor gave a browser-only SDK (docs/vendor/warner-h5sdk.md): it needs window, document, localStorage and WebAssembly, reaches cameras through the dvr163.com P2P relay, and returns raw frames via ConnectApi.onrecvframeex. Run it in headless Chromium and expose a small, allow-listed API to our Python services. Do this first in Sprint 1: S1-05 and S1-08 depend on it."
+      deliver:
+        - "services/warner_bridge/ (Node 20 + Playwright): loads the SDK from vendor/warner_h5sdk/ (checksum-verified) in a headless page; wires ConnectApi callbacks directly (no canvas rendering needed)"
+        - "Session pool: one P2P session per camera; preconnect (connectType 0) → login → OpenStream(streamid 0) on window open → CloseStream on window close → disconnect after an idle timeout; reconnect with backoff; Warner error codes mapped to typed errors"
+        - "Frame path: onrecvframeex → drop frametype 0 (audio) → send {kind, codec, width, height, fps, ts, bytes} over a Unix socket (length-prefixed) to services/camera_adapters/warner.py"
+        - "Playback path: SreachRecord + StartPlayBack + onrecvrecframe, serialised per device"
+        - "MQTT allow-list: getDeviceModal, gets of time/health/posture properties, R.Sync.Stat.TF and R.Sync.Stat.NetWork only; set System.Time.TimeUtc only if DECISIONS.md approves; everything else refused in code; User.List never requested"
+        - "Credentials from env only; refuses device user admin with an empty password; never uses the token or app key embedded in the SDK; never uses the demo's password-derivation logic"
+        - "tools/commission_warner.py: dry-run by default; prints current posture and planned changes; with --apply (run by a person, H-15) sets a unique device password from the vault and turns alarm push, on-camera boxes and audio input off, continuous sub-stream SD recording on"
+        - "docker image for the bridge; health endpoint; memory and session metrics"
+      acceptance:
+        - "Contract tests pass against a fake Warner page that emits scripted callbacks (connect codes, frames, audio frames, errors)"
+        - "Audio frames never cross the socket (tested)"
+        - "Calling any non-allow-listed SDK or MQTT method raises and is logged without arguments"
+        - "8 h soak with 6 simulated cameras: stable memory, no leaked sessions"
+        - "Grep test: bridge logs and metrics never contain passwords, deviceSecret, tokens or frame bytes"
+        - "Live 10 min sub stream from one pilot camera reaches the recorder (needs H-02)"
+      out_of_scope: ["Decoding or rendering video", "Live view in the Katch app (it already embeds the vendor player)", "Applying camera settings at runtime"]
+
+# ═════════════════════════ Sprint 2 — Phase 2: nightly AI count ═════════════════════════
+  - id: S2-01
+    sprint: S2
+    owner: claude_code
+    status: todo
+    depends_on: [S1-08]
+    needs_input: [H-20]
+    title: "Frame sampler by view, day/night and crowding, only from operators that permit training; door polygons per camera layout; crop to 416/512 px"
+    done_when: "5,000 frames exported with a manifest"
+    brief:
+      context: "The model is small on purpose; door-region crops from our own buses matter more than model size. The operator owns its raw video; VV-Co may train on it only where the processor agreement allows (H-20), and the trained model is VV-Co's IP."
+      deliver:
+        - "ml/sampling/sample_frames.py: stratified by view, day/night, crowding proxy (dwell x tickets); fixed seed; skips every operator with training_permitted = false"
+        - "Dataset manifest lists, per frame, operator_id and the processor_agreement_ref that permits training"
+        - "camera_layout store: door polygon, sill line, inner zone; tools/draw_polygon.py"
+        - "ml/preprocess/crop.py (shared by training, batch and edge), letterboxed 416 or 512"
+      acceptance:
+        - "Strata counts within 10% of the requested mix; same seed, same sample"
+        - "An operator without training permission contributes zero frames (tested)"
+        - "Crop tests on polygon edge cases"
+      out_of_scope: ["Auto-calibration of polygons"]
+
+  - id: S2-02
+    sprint: S2
+    owner: claude_code
+    status: todo
+    depends_on: [S2-01]
+    needs_input: [H-09]
+    title: "Auto-labelling: pre-label heads with a large detector; export a 10% QA sample"
+    done_when: "Labels and QA sample ready by Wednesday"
+    brief:
+      context: "Replaces most human labelling. A large detector (e.g. YOLO11x or an open-vocabulary detector prompted for 'head') pre-labels; people check 10% (H-09)."
+      deliver:
+        - "ml/autolabel/: pre-label head and person boxes on the sampled frames; confidence per box"
+        - "QA export (CVAT or Label Studio) of a stratified 10% sample, low-confidence frames over-represented"
+        - "Label quality report once H-09 is done: precision/recall of auto-labels vs checked sample"
+      acceptance:
+        - "Every frame has labels with a source tag (auto or human)"
+        - "QA sample export validated by the labelling tool's importer"
+        - "Quality report generated (needs H-09; otherwise blocked)"
+      out_of_scope: ["Using auto-labels as ground truth for the harness (never)"]
+
+  - id: S2-03
+    sprint: S2
+    owner: claude_code
+    status: todo
+    depends_on: [S2-02]
+    needs_input: [H-03]
+    title: "Training pipeline from config; train v1 (YOLO11n, head and person) on a night GPU"
+    done_when: "v1 weights registered"
+    brief:
+      context: "Nano-class detector, two classes, top-down and oblique door views, fine-tuned from COCO."
+      deliver:
+        - "ml/train/: config-driven (dataset version, 416/512, augmentations), fixed seed; CPU smoke config for CI"
+        - "infra job to run training on a staging GPU at night within the budget cap"
+      acceptance:
+        - "Same config twice → same dataset hash, metrics within noise"
+        - "v1 trained on the GPU and registered (needs H-03)"
+      out_of_scope: ["Large hyper-parameter searches"]
+
+  - id: S2-04
+    sprint: S2
+    owner: claude_code
+    status: todo
+    depends_on: [S2-03]
+    title: "Tracker (ByteTrack or OC-SORT) tuned for 5–6 fps; track IDs reset per clip"
+    done_when: "ID switches measured"
+    brief:
+      context: "Low frame rate means large jumps; association must tolerate them. Privacy: tracks never link across clips."
+      deliver:
+        - "packages/vvco_count/track.py: ByteTrack and OC-SORT behind one interface; config for association window and second-pass floor"
+      acceptance:
+        - "ID-switch and fragmentation metrics on labelled tracks"
+        - "Test proves track IDs restart for each clip"
+      out_of_scope: ["Any re-identification"]
+
+  - id: S2-05
+    sprint: S2
+    owner: claude_code
+    status: todo
+    depends_on: [S2-04, S2-01]
+    title: "Counting package vvco_count: sill line, inner zone, 3 s return discard, height proxy near 120 cm"
+    done_when: "Synthetic track suite passes"
+    brief:
+      context: "Shared by batch (Phase 2) and edge (Phase 4). Pure functions only."
+      deliver:
+        - "packages/vvco_count/count.py: boarding when a track enters the inner zone after crossing the sill from outside; alighting in reverse; cross-and-return within 3 s discarded"
+        - "Height proxy from head-box size vs door geometry; child if < ~120 cm (configurable)"
+        - "Outputs CounterEvent per contracts/counter.py"
+      acceptance:
+        - "Suite: board, alight, hesitate-and-return, two side by side, track lost mid-door"
+        - "Same tracks in, same events out"
+      out_of_scope: ["Drift control (S2-08)"]
+
+  - id: S2-06
+    sprint: S2
+    owner: claude_code
+    status: todo
+    depends_on: [S1-10, S1-02]
+    needs_input: [H-07]
+    title: "Ground-truth tool for H-07 and accuracy harness: per-stop error, trip totals, splits by view and crowding"
+    done_when: "Baseline and v1 scored"
+    brief:
+      context: "G3 is decided on this harness. It scores only against human counts or counters, never auto-labels."
+      deliver:
+        - "Annotator flow (reusing S1-10): blind double count per stop, disagreement queue → ground_truth_count"
+        - "ml/harness/: per-stop boarding/alighting accuracy, VDV 457-style trip totals, splits by view, crowding, day/night; markdown + JSON report"
+      acceptance:
+        - "Same inputs → byte-identical report"
+        - "Report states sample size per split and flags splits under 20 stops"
+        - "Refuses to score against any label with source=auto"
+        - "Scored on >=100 human stops (needs H-07; provisional until then)"
+      out_of_scope: ["Threshold choice (S3-08)"]
+
+  - id: S2-07
+    sprint: S2
+    owner: claude_code
+    status: todo
+    depends_on: [S2-06]
+    title: "Model registry: weights, dataset hash, harness report per version"
+    done_when: "No promotion without a report"
+    brief:
+      context: "crossing_event.model_version must point to something reproducible."
+      deliver:
+        - "ml/registry/: object-storage layout (or MLflow): model_version → weights, config, dataset hash, harness report; CLI register/list/promote"
+      acceptance:
+        - "Promotion without a harness report fails"
+        - "Batch and edge resolve weights by model_version only"
+      out_of_scope: ["UI"]
+
+  - id: S2-08
+    sprint: S2
+    owner: claude_code
+    status: todo
+    depends_on: [S2-05, S2-07]
+    needs_input: [H-03]
+    title: "Nightly batch: queue, idempotent per clip and model, ONNX/TensorRT, drift control, 06:00 alert"
+    done_when: "Re-run writes identical rows"
+    brief:
+      context: "GPU nodes run only at night; the morning report needs everything counted by 06:00. Target 1.3–2.5 GPU-min per bus-day."
+      deliver:
+        - "services/batch/: queue of clip jobs (crop → detect → track → count → crossing_event), key (clip_id, model_version)"
+        - "ONNX export + TensorRT engine; parity test vs PyTorch"
+        - "Drift control: onboard zeroed at trip start and terminals; per-stop balance; negative onboard clamped and flagged"
+        - "Night scheduler scaling GPU workers; alerts at 05:00 projected miss and 06:00 actual miss"
+      acceptance:
+        - "Same night twice → identical rows"
+        - "Failed clip retried 3 times, then failure table"
+        - "GPU-min per bus-day measured on staging GPU (needs H-03)"
+      out_of_scope: ["Choosing cloud vs on-prem (H-13)"]
+
+  - id: S2-09
+    sprint: S2
+    owner: claude_code
+    status: todo
+    depends_on: [S2-08, S1-11]
+    title: "Reconciliation v1, flag scoring, AI counts in the review screen"
+    done_when: "Morning report by 07:00"
+    brief:
+      context: "Per-stop noise is tolerated because gaps aggregate by conductor and week; every flag carries its clips for a human decision. Phase 2's promise is 'finds leakage', not 'counts to ±1': an 85%-accurate counter still shows a 25% ticket shortfall clearly over a week of trips. The ≥95% promise belongs to Phase 3."
+      deliver:
+        - "Reconciliation from crossing_event (any source): boardings, alightings, tickets, gap, gap_pct, onboard_after; totals by trip, conductor, route, week"
+        - "AI counts replace manual counts as input to the S1-11 ranking; the 1% control sample continues"
+        - "Flag score from gap size, consistency and conductor history; flag.clip_ids always filled; est_leakage_inr recomputed from AI boardings"
+        - "Review screen shows AI count vs tickets per stop; confirm/dismiss saved with reviewer_id; operator can enter the amount actually recovered on a confirmed flag (recovered_inr)"
+        - "Morning report (dashboard + one-page PDF per operator) by 07:00, led by estimated leakage and recovered ₹"
+      acceptance:
+        - "Idempotent; mixed sources on one bus give one coherent stop row"
+        - "No flag without a clip; Playwright confirms a flag end to end"
+        - "Report never states an accuracy figure without the harness report version and sample size"
+      out_of_scope: ["Source priority (S3-03)"]
+
+  - id: S2-10
+    sprint: S2
+    owner: claude_code
+    status: todo
+    depends_on: [S2-08]
+    title: "GPU cost report from measured timings: cloud L4 at night vs on-prem RTX"
+    done_when: "Recommendation for H-13"
+    brief:
+      context: "Architecture doc estimate: cloud L4 ~US$1.0–1.6/h in Mumbai vs an on-prem RTX workstation ~Rs3.5 lakh per ~350 buses over 36 months."
+      deliver:
+        - "docs/decisions/gpu.md: measured GPU-min per bus-day, cost per bus-month at 100/400/1,000 buses for both options, recommendation"
+      acceptance:
+        - "Every number traceable to a measurement or a cited price"
+      out_of_scope: ["Buying hardware"]
+
+# ═════════════════════════ Sprint 3 — Phase 3: door counters ═════════════════════════
+  - id: S3-01
+    sprint: S3
+    owner: claude_code
+    status: todo
+    depends_on: [S1-03, S1-04, S1-07]
+    needs_input: [H-10]
+    title: "Counter ingest: FOORIR heartBeat and dataUpload to crossing_event; HTTPS, allow-list, heartbeat alerts"
+    done_when: "Simulator and fitted units land as rows"
+    brief:
+      context: "Counters are both a Phase 3 product and ground truth for Phase 2. FOORIR defaults are insecure (bare HTTP, default creds)."
+      deliver:
+        - "services/counter_ingest/: POST /api/camera/heartBeat and /api/camera/dataUpload; HTTPS only; device allow-list by serial; rate limits"
+        - "One crossing_event per eventList item; µs → UTC; stop attribution via stop_event windows; events outside windows kept and flagged"
+        - "Alert when a counter misses 10 heartbeats while its bus is active"
+      acceptance:
+        - "Simulator day lands with zero duplicates on replay"
+        - "Unknown serial → 403; plain HTTP rejected"
+        - "Fitted units upload for a duty day (needs H-10)"
+      out_of_scope: ["Second vendor (S3-04)"]
+
+  - id: S3-02
+    sprint: S3
+    owner: claude_code
+    status: todo
+    depends_on: [S3-01, S2-09]
+    title: "Late uploads: 90-day device cache backfill re-runs reconciliation for past days"
+    done_when: "Simulated 3-day dropout reconciles"
+    brief:
+      context: "Counters cache 90 days and upload after an eSIM dropout."
+      deliver:
+        - "Detect late events for closed days; enqueue reconciliation re-runs"
+      acceptance:
+        - "3-day simulated dropout ends with correct stop_reconciliation for all three days"
+      out_of_scope: []
+
+  - id: S3-03
+    sprint: S3
+    owner: claude_code
+    status: todo
+    depends_on: [S2-09]
+    title: "Source priority (counter, then edge, then AI) and disagreement flags"
+    done_when: "Mixed-source stops unit-tested"
+    brief:
+      context: "When a bus has counters and AI, pick one source per door and say why."
+      deliver:
+        - "Priority configurable per operator; default counter > edge > ai_batch"
+        - "Disagreement flag when sources differ beyond a threshold"
+      acceptance:
+        - "Unit test per priority path"
+      out_of_scope: []
+
+  - id: S3-04
+    sprint: S3
+    owner: claude_code
+    status: todo
+    depends_on: [S1-03]
+    title: "Milesight VS133 adapter behind the same contract, plus a vendor conformance kit for further sensors"
+    done_when: "Contract tests pass for both vendors"
+    brief:
+      context: "Keep FOORIR replaceable if price, BIS status or accuracy disappoints, and keep a non-Chinese-origin option open because some STU tenders bar Chinese-origin sensors (Part B risk register). A third vendor (Hikvision, Dahua, Streamax or a non-Chinese unit) should take days, not a sprint."
+      deliver:
+        - "services/counter_ingest/vendors/milesight.py from public payload docs; simulator payloads"
+        - "services/counter_ingest/vendors/TEMPLATE/: adapter skeleton, simulator template and the shared contract suite as a pytest plugin"
+        - "docs/vendor/adding-a-counter.md: steps, required fields, how origin_country and certification_ref are recorded on the device"
+      acceptance:
+        - "Same contract suite passes for FOORIR and Milesight"
+        - "The TEMPLATE adapter fails the suite with clear messages until filled in"
+      out_of_scope: ["Buying hardware"]
+
+  - id: S3-05
+    sprint: S3
+    owner: claude_code
+    status: todo
+    depends_on: [S3-01]
+    title: "Commissioning script: rotate default credentials, turn off Map Collection, set HTTPS push"
+    done_when: "Refuses to finish on default creds"
+    brief:
+      context: "A person runs this at the depot for each unit (H-10). Every unit must leave with no default credentials."
+      deliver:
+        - "tools/commission_counter.py: guided checklist; new creds from the vault, never printed; registers serial in device table"
+        - "docs/runbooks/commission-counter.md"
+      acceptance:
+        - "Refuses to finish while the device still accepts default creds (tested against simulator)"
+      out_of_scope: []
+
+  - id: S3-06
+    sprint: S3
+    owner: claude_code
+    status: todo
+    depends_on: [S3-01, S2-06]
+    title: "Three-way comparison: counter vs AI vs manual per stop"
+    done_when: "Table for any day with all three"
+    brief:
+      context: "FOORIR's accuracy claim is untested too; three sources keep everyone honest."
+      deliver:
+        - "ml/harness/three_way.py: per-stop table, disagreement stats, top-20 disagreements with clip links (signed, audited)"
+      acceptance:
+        - "Runs on any day with all three sources"
+      out_of_scope: []
+
+  - id: S3-07
+    sprint: S3
+    owner: claude_code
+    status: todo
+    depends_on: [S2-06, S2-07, S2-02]
+    title: "Retrain loop: error gallery, active-learning sample, auto-label, retrain, harness, register"
+    done_when: "v2 and v3 registered with reports"
+    brief:
+      context: "Closes the gap to G3 without waiting for people, except the 10% label check and ground truth."
+      deliver:
+        - "ml/loop/: nightly job — worst stops by error → sample frames → auto-label → retrain → harness → register; promotes only if harness improves"
+        - "Error gallery page (auth'd, signed clip URLs)"
+      acceptance:
+        - "Loop never promotes a model that scores worse on human ground truth"
+        - "Each iteration leaves a registry entry and report"
+      out_of_scope: []
+
+  - id: S3-08
+    sprint: S3
+    owner: claude_code
+    status: todo
+    depends_on: [S2-09]
+    needs_input: [H-06]
+    title: "Flag-threshold tuning from reviewer decisions"
+    done_when: "Threshold curve for H-13"
+    brief:
+      context: "G3 needs >=80% of flags confirmed by reviewers."
+      deliver:
+        - "tools/tune_flags.py: precision vs threshold vs flag volume from reviewer decisions; recommended threshold"
+      acceptance:
+        - "Curve reproducible from the decision log"
+        - "Built on real decisions (needs H-06; otherwise on simulated decisions, marked provisional)"
+      out_of_scope: ["Choosing the threshold (H-13)"]
+
+  - id: S3-09
+    sprint: S3
+    owner: claude_code
+    status: todo
+    depends_on: [S2-09, S2-06, S1-12]
+    needs_input: [H-18]
+    title: "Pilot KPI dashboard: buses live, per-stop accuracy, flag precision, recovered ₹ vs subscription, review minutes, GB per bus-day, churn"
+    done_when: "Every KPI computed from data for any pilot week"
+    brief:
+      context: "The pilot is judged on the KPIs in docs/business-brief.md (from Part B). The targets are agreed with the pilot operator before deployment (H-18); until then use the Part B defaults and mark them provisional. G3 and G4 read from this."
+      deliver:
+        - "services/reconcile/kpi.py + a KPI page in the web console, per operator and pilot-wide, by week"
+        - "Buses live (clips and counts in the last 24 h; target 10 by week 12)"
+        - "Per-stop accuracy by view and crowding, from the latest harness report (target >= 90% top-down uncrowded, >= 80% crowded)"
+        - "Flag precision: share of flags confirmed by a reviewer (target >= 80%)"
+        - "Recovered ₹ per bus-month from confirmed flags (est_leakage_inr and recovered_inr shown separately) vs the subscription price (target >= 3x)"
+        - "Review effort: manager minutes per bus-week from review_session (target <= 15)"
+        - "Data cost: GB per bus-day over eSIM from recorder bytes (target <= 0.6)"
+        - "Churn: operators cancelling after month 3 (target 0 in pilot)"
+        - "Targets read from config/kpi_targets.yaml, each with its source (Part B default or H-18)"
+      acceptance:
+        - "Every KPI unit-tested on a hand-built week with a known answer"
+        - "Each figure links to the query or report that produced it"
+        - "No conductor-level data on the pilot-wide view"
+      out_of_scope: ["Billing", "Setting the targets (H-18)"]
+
+# ═════════════════════════ Sprint 4 — Phase 4: edge vision ═════════════════════════
+  - id: S4-01
+    sprint: S4
+    owner: claude_code
+    status: todo
+    depends_on: [S2-05]
+    title: "vvco_count as an aarch64 wheel shared by batch and edge"
+    done_when: "Installs on aarch64 in CI"
+    brief:
+      context: "Batch and edge must run the same rule so their numbers compare."
+      deliver:
+        - "packages/vvco_count wheel with no GPU-only deps; batch imports it"
+      acceptance:
+        - "Wheel installs and tests pass on aarch64 (CI emulation)"
+      out_of_scope: []
+
+  - id: S4-02
+    sprint: S4
+    owner: claude_code
+    status: todo
+    depends_on: [S2-07]
+    title: "Export to RKNN and Hailo HEF, INT8 with a calibration set; score on the harness"
+    done_when: "Loss vs batch <= 2 points"
+    brief:
+      context: "Expect 1–2 points accuracy loss from INT8. Vendor compilers (RKNN Toolkit, Hailo Dataflow Compiler) run in a container on x86."
+      deliver:
+        - "ml/export/rknn.py, ml/export/hailo.py; calibration-set builder from the registry dataset; Dockerfiles for both toolchains"
+      acceptance:
+        - "Exported models registered with their own harness reports"
+        - "If a toolchain cannot be installed headless, mark blocked with exact install steps in BLOCKED.md"
+      out_of_scope: []
+
+  - id: S4-03
+    sprint: S4
+    owner: claude_code
+    status: todo
+    depends_on: [S4-01]
+    needs_input: [H-01]
+    title: "Edge runtime: 2 RTSP streams at 360p 8–10 fps, GPS/door gating, MQTT QoS 1, offline buffer"
+    done_when: "24 h bench run with a 2 h dropout loses nothing"
+    brief:
+      context: "Video stays on the bus by default; only crossing events leave."
+      deliver:
+        - "edge/: runtime reading two RTSP streams, gating on GPS speed or door signal, NPU inference, vvco_count; MQTT vvco/{vehicle}/{door}/crossing QoS 1 with disk-backed offline buffer"
+      acceptance:
+        - "2 h network cut → every event delivered after reconnect, no duplicates in crossing_event"
+        - "No frame written outside a RAM ring buffer"
+        - "24 h run on a real kit (needs H-01; otherwise on emulation, marked provisional)"
+      out_of_scope: ["Clip upload (S4-05)"]
+
+  - id: S4-04
+    sprint: S4
+    owner: claude_code
+    status: todo
+    depends_on: [S4-03]
+    title: "Provisioning, signed OTA, model version pinning, heartbeat"
+    done_when: "Rollback tested"
+    brief:
+      context: "1,000 boxes cannot be updated by hand."
+      deliver:
+        - "Provisioning script (device identity, vault-issued creds, MQTT certs); signed OTA packages; model pinned by model_version; heartbeat with versions and temperature"
+      acceptance:
+        - "Unsigned package rejected; rollback to previous version works"
+      out_of_scope: []
+
+  - id: S4-05
+    sprint: S4
+    owner: claude_code
+    status: todo
+    depends_on: [S4-03, S2-09]
+    title: "Clip upload only for flagged events"
+    done_when: "No upload without a server request"
+    brief:
+      context: "Reviewers still need evidence, but only for flagged stops."
+      deliver:
+        - "Server requests clips for flagged stops; box uploads from its short local buffer into the normal clip store and lifecycle"
+      acceptance:
+        - "No upload without a server request (tested)"
+        - "Local buffer overwritten within its window"
+      out_of_scope: []
+
+  - id: S4-06
+    sprint: S4
+    owner: claude_code
+    status: todo
+    depends_on: [S4-03]
+    title: "Edge-vs-batch comparison and egress privacy check tools"
+    done_when: "Both run on bench captures"
+    brief:
+      context: "Phase 4's privacy claim must be shown, not asserted; edge must match batch."
+      deliver:
+        - "ml/harness/edge_vs_batch.py: per-stop deltas between source=edge and source=ai_batch"
+        - "tools/egress_check.py: summarises a pcap by destination, protocol, bytes; fails if any media stream leaves the box"
+      acceptance:
+        - "Test pcaps with and without a video upload classified correctly"
+      out_of_scope: []
+
+  - id: S4-07
+    sprint: S4
+    owner: claude_code
+    status: todo
+    depends_on: [S2-06, S2-10, S3-08, S3-09, S4-08]
+    needs_input: [H-16, H-19]
+    title: "G3 and G4 evidence packs: accuracy report; pricing model from measured costs and recovered fares"
+    done_when: "Packs ready for H-13"
+    brief:
+      context: "Gates are human calls; Claude Code prepares the evidence. Pricing method from Part A, applied in order: cost floor, value ceiling, market anchors. Part B packaging: Phase 1 free for 60 days; Phase 2 ₹750 per bus-month list, ₹600 at >= 200 buses, ₹500 at >= 1,000, or 10–15% of verified recovered fares; Phases 3–4 hardware one-time plus ₹1,000–1,500 per bus-month. The 100-bus pilot runs at a loss by design."
+      deliver:
+        - "docs/gates/G3.md: harness report for the promoted model, flag confirm rate, sample sizes, caveats; G3 fail path (door cameras or Phase 3 counters as lead product)"
+        - "docs/gates/G4.md: measured cost per bus-month (eSIM data, GPU, storage, core services, support, amortised engineering) at 100, 400 and 1,000 buses, all-in and variable"
+        - "G4 pricing: cost floor = variable cost ÷ (1 − 0.65); value ceiling = 10–25% of recovered ₹ per bus-month and never above one recovered ₹25 fare a day (≈ ₹650); market anchors (AIS-140 device ≈ ₹250–400 a month over 3 years, PMPML AI kit ≈ ₹670, Katch's own subscription from H-19)"
+        - "Sensitivity to the eSIM plan (H-16): cost with and without ~16 GB/month of existing headroom"
+        - "Recovered ₹ from S3-09 vs price; the price x 3 test; recommended list price and success-fee option"
+      acceptance:
+        - "Every number traceable to a query, registry artifact or cited price"
+        - "Estimates and measurements are labelled as such"
+        - "Packs regenerate with one command as data grows"
+      out_of_scope: ["Making the calls (H-13)", "Setting the price"]
+
+  - id: S4-08
+    sprint: S4
+    owner: claude_code
+    status: todo
+    depends_on: [S1-02, S1-09]
+    title: "Plans and usage metering: 60-day free Phase 1 trial, Phase 2 tiers and success-fee option, bus-month meter"
+    done_when: "Monthly usage statement per operator from data"
+    brief:
+      context: "Katch sells, VV-Co delivers: VV-Co needs to know what each operator is entitled to and what it used, so Katch can invoice. No payment or invoicing code; that stays with Katch for now."
+      deliver:
+        - "operator.plan (phase1_trial, phase2, phase3, phase4) and trial_ends_on; features gated by plan (Phase 1 review only during the trial; AI counts and morning report on phase2+)"
+        - "Price book in config/price_book.yaml: Phase 2 tiers ₹750 / ₹600 at >= 200 buses / ₹500 at >= 1,000; success fee 10–15% of verified recovered_inr; Phase 3–4 hardware one-time + ₹1,000–1,500 per bus-month; every price marked draft until G4"
+        - "Bus-month meter: a bus counts for a month if it produced clips or counts on any day that month"
+        - "Monthly usage statement per operator (CSV + PDF): buses metered, plan, tier, success-fee basis"
+      acceptance:
+        - "Trial ending switches features off without deleting any data (tested)"
+        - "Meter is idempotent and matches a hand-built month"
+        - "Statement shows draft prices as draft"
+      out_of_scope: ["Invoicing, payments, GST", "Final prices (G4)"]
+
+  - id: S4-09
+    sprint: S4
+    owner: claude_code
+    status: todo
+    depends_on: [S3-06, S2-06]
+    needs_input: [H-18, H-11]
+    title: "Tender-grade accuracy report (VDV 457-style protocol) and tender compliance pack"
+    done_when: "Publishable report regenerates from the harness"
+    brief:
+      context: "No vendor has published an independent accuracy figure for buses in India; the only peer-reviewed field study measured 53–83% (Pronello & Garzón Ruiz 2023). The first published Indian report sets the benchmark tenders copy (Part B), and it is what Phase 3 needs for CESL PM-eBus Sewa (two stereo counters per bus at >= 95%) and BMTC-type trials."
+      deliver:
+        - "ml/harness/tender_report.py: VDV 457-style method (whole-trip total error <= 2–5%, stop-level faults counted), splits by source (counter, AI, edge), view, crowding, day/night; sample sizes and confidence intervals"
+        - "docs/reports/accuracy-report.md generated: method, protocol agreed in H-18, results, limits; no operator names, conductor IDs, images or route identifiers"
+        - "docs/reports/tender-compliance.md generated: devices by origin_country and certification_ref (BIS CRS / ER-01 status from H-11), data residency statement, retention and access controls"
+      acceptance:
+        - "Same inputs → byte-identical report"
+        - "Report refuses to state a figure for any split under 20 stops"
+        - "Automated check finds no personal or operator-identifying data in the published files"
+      out_of_scope: ["Publishing the report (people decide)", "ITxPT / AIS-153 integration (post-pilot backlog)"]

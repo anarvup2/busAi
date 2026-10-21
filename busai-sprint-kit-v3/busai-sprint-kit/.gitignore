@@ -1,0 +1,5 @@
+vendor/warner_h5sdk/
+vendor/*.zip
+.env
+.env.*
+secrets/
