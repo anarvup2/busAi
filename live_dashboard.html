@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bus Passenger Count</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f3f5f4;
+      --surface: #ffffff;
+      --ink: #17211d;
+      --muted: #66716c;
+      --line: #d8dfdb;
+      --green: #13734b;
+      --red: #b63e38;
+      --blue: #2767a5;
+      --amber: #a8610a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 14px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 18px 24px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+    }
+    h1 { margin: 0; font-size: 20px; }
+    .subtitle { margin-top: 3px; color: var(--muted); }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+    }
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--red);
+    }
+    .status.online .dot { background: var(--green); }
+    main { width: min(1120px, 100%); margin: 0 auto; padding: 24px; }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .metric {
+      min-height: 132px;
+      padding: 20px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 7px;
+    }
+    .metric-label { color: var(--muted); font-weight: 700; }
+    .metric-value {
+      margin-top: 14px;
+      font-size: 46px;
+      line-height: 1;
+      font-weight: 750;
+    }
+    .entered .metric-value { color: var(--green); }
+    .exited .metric-value { color: var(--red); }
+    .onboard .metric-value { color: var(--blue); }
+    .net .metric-value { color: var(--amber); }
+    .secondary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .small {
+      padding: 15px 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 7px;
+    }
+    .small strong { display: block; margin-top: 6px; font-size: 18px; }
+    section { margin-top: 24px; }
+    h2 { margin: 0 0 10px; font-size: 16px; }
+    .details {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      overflow: hidden;
+    }
+    .detail { padding: 14px 18px; border-bottom: 1px solid var(--line); }
+    .detail:nth-child(odd) { border-right: 1px solid var(--line); }
+    .detail-label { color: var(--muted); font-size: 12px; }
+    .detail-value { margin-top: 4px; font-weight: 650; overflow-wrap: anywhere; }
+    pre {
+      min-height: 180px;
+      max-height: 360px;
+      margin: 0;
+      padding: 18px;
+      overflow: auto;
+      background: #18201d;
+      color: #e6ece8;
+      border-radius: 7px;
+      font: 12px/1.55 ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    .warning { color: var(--amber); }
+    @media (max-width: 720px) {
+      header { align-items: flex-start; padding: 16px; }
+      main { padding: 16px; }
+      .metrics { grid-template-columns: 1fr; }
+      .secondary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .details { grid-template-columns: 1fr; }
+      .detail:nth-child(odd) { border-right: 0; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Bus Passenger Count</h1>
+      <div class="subtitle">HX-CCD22 live camera receiver</div>
+    </div>
+    <div id="status" class="status"><i class="dot"></i><span>Waiting for camera</span></div>
+  </header>
+
+  <main>
+    <div class="metrics">
+      <div class="metric entered">
+        <div class="metric-label">Entered</div>
+        <div id="in-count" class="metric-value">0</div>
+      </div>
+      <div class="metric exited">
+        <div class="metric-label">Exited</div>
+        <div id="out-count" class="metric-value">0</div>
+      </div>
+      <div class="metric onboard">
+        <div class="metric-label">Estimated onboard (session)</div>
+        <div id="occupancy" class="metric-value">0</div>
+      </div>
+      <div class="metric net">
+        <div class="metric-label">Net flow (IN - OUT)</div>
+        <div id="net-flow" class="metric-value">+0</div>
+      </div>
+    </div>
+
+    <div class="secondary">
+      <div class="small"><span class="metric-label">Pass by</span><strong id="passby">0</strong></div>
+      <div class="small"><span class="metric-label">Turn back</span><strong id="turnback">0</strong></div>
+      <div class="small"><span class="metric-label">Uploads</span><strong id="uploads">0</strong></div>
+      <div class="small"><span class="metric-label">Messages</span><strong id="messages">0</strong></div>
+    </div>
+
+    <section>
+      <h2>Camera status</h2>
+      <div class="details">
+        <div class="detail"><div class="detail-label">Serial number</div><div id="sn" class="detail-value">Waiting...</div></div>
+        <div class="detail"><div class="detail-label">Camera IP</div><div id="client-ip" class="detail-value">Waiting...</div></div>
+        <div class="detail"><div class="detail-label">Last heartbeat</div><div id="heartbeat" class="detail-value">Waiting...</div></div>
+        <div class="detail"><div class="detail-label">Last count upload</div><div id="upload-time" class="detail-value">Waiting...</div></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Latest real camera payload</h2>
+      <pre id="payload">Waiting for /api/camera/dataUpload...</pre>
+    </section>
+  </main>
+
+  <script>
+    const setText = (id, value) => {
+      document.getElementById(id).textContent = value ?? "Waiting...";
+    };
+
+    async function refresh() {
+      try {
+        const response = await fetch("/api/live", { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+
+        setText("in-count", Number(data.in || 0).toLocaleString());
+        setText("out-count", Number(data.out || 0).toLocaleString());
+        setText("occupancy", Number(data.occupancy || 0).toLocaleString());
+        const netFlow = Number(data.net_flow || 0);
+        setText("net-flow", `${netFlow >= 0 ? "+" : ""}${netFlow.toLocaleString()}`);
+        setText("passby", Number(data.passby || 0).toLocaleString());
+        setText("turnback", Number(data.turnback || 0).toLocaleString());
+        setText("uploads", Number(data.uploads || 0).toLocaleString());
+        setText("messages", Number(data.messages || 0).toLocaleString());
+        setText("sn", data.last_sn);
+        setText("client-ip", data.last_client_ip);
+        setText("heartbeat", data.last_heartbeat);
+        setText("upload-time", data.last_upload);
+
+        const status = document.getElementById("status");
+        status.classList.toggle("online", Boolean(data.online));
+        status.querySelector("span").textContent = data.online
+          ? "Camera online"
+          : data.last_heartbeat ? "Camera offline" : "Waiting for camera";
+
+        document.getElementById("payload").textContent = data.latest_payload
+          ? JSON.stringify(data.latest_payload, null, 2)
+          : "Waiting for /api/camera/dataUpload...";
+      } catch (error) {
+        const status = document.getElementById("status");
+        status.classList.remove("online");
+        status.querySelector("span").textContent = "Receiver unavailable";
+      }
+    }
+
+    refresh();
+    setInterval(refresh, 1000);
+  </script>
+</body>
+</html>

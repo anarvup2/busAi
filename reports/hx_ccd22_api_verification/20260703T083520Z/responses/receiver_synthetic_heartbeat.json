@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "data": {
+    "dataMode": "Add",
+    "sn": "<redacted>",
+    "time": 1783067721,
+    "timezone": 5.5,
+    "uploadInterval": 1
+  },
+  "msg": "success"
+}

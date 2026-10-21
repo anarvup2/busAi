@@ -1,0 +1,43 @@
+{
+  "avg_stay_time_seconds": 1.8070430755615234,
+  "camera_ip": "<redacted-ip>",
+  "current_stay": 0,
+  "display_endpoint": "http://<redacted-ip>/api/passengerFlow/passengerFlowData/DisplayDataGet",
+  "estimated_onboard": 2,
+  "in": 225,
+  "last_camera_poll": "2026-07-03T14:05:20",
+  "last_client_ip": null,
+  "last_heartbeat": null,
+  "last_heartbeat_device_time": null,
+  "last_poll_error": null,
+  "last_push_upload": null,
+  "last_sample_minute": "2026-07-03T14:05:00",
+  "last_sn": "<redacted>",
+  "latest_push_payload": null,
+  "net_count": 2,
+  "online": true,
+  "out": 223,
+  "passby": 15,
+  "poll_successes": 25,
+  "push_messages": 0,
+  "rtc_client_url": "http://<redacted-ip>/js/rtcClient.js",
+  "server_time": "2026-07-03T14:05:21",
+  "session_samples": [
+    {
+      "in": 225,
+      "onboard": 2,
+      "out": 223,
+      "time": "2026-07-03T14:04:00"
+    },
+    {
+      "in": 225,
+      "onboard": 2,
+      "out": 223,
+      "time": "2026-07-03T14:05:00"
+    }
+  ],
+  "source": "camera_web_display_api",
+  "stream_available": true,
+  "turnback": 115,
+  "webrtc_url": "http://<redacted-ip>/media/webrtc?app=live&stream=camera&type=play"
+}

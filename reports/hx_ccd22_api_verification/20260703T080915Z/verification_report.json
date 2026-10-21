@@ -1,0 +1,610 @@
+{
+  "endpoint_results": [
+    {
+      "body_kind": "none",
+      "classification": "receiver prototype/debug",
+      "content_type": null,
+      "elapsed_ms": 3,
+      "error": "<urlopen error [Errno 1] Operation not permitted>",
+      "json_keys": [],
+      "method": "GET",
+      "name": "receiver_health",
+      "note": null,
+      "ok": false,
+      "saved_response": null,
+      "status": null,
+      "url": "http://<redacted-ip>:8088/health"
+    },
+    {
+      "body_kind": "none",
+      "classification": "receiver prototype/debug",
+      "content_type": null,
+      "elapsed_ms": 0,
+      "error": "<urlopen error [Errno 1] Operation not permitted>",
+      "json_keys": [],
+      "method": "GET",
+      "name": "receiver_api_config",
+      "note": null,
+      "ok": false,
+      "saved_response": null,
+      "status": null,
+      "url": "http://<redacted-ip>:8088/api/config"
+    },
+    {
+      "body_kind": "none",
+      "classification": "receiver prototype/debug",
+      "content_type": null,
+      "elapsed_ms": 0,
+      "error": "<urlopen error [Errno 1] Operation not permitted>",
+      "json_keys": [],
+      "method": "GET",
+      "name": "receiver_api_status_current",
+      "note": null,
+      "ok": false,
+      "saved_response": null,
+      "status": null,
+      "url": "http://<redacted-ip>:8088/api/status/current"
+    },
+    {
+      "body_kind": "none",
+      "classification": "receiver prototype/debug",
+      "content_type": null,
+      "elapsed_ms": 0,
+      "error": "<urlopen error [Errno 1] Operation not permitted>",
+      "json_keys": [],
+      "method": "GET",
+      "name": "receiver_api_dashboard",
+      "note": null,
+      "ok": false,
+      "saved_response": null,
+      "status": null,
+      "url": "http://<redacted-ip>:8088/api/dashboard"
+    },
+    {
+      "body_kind": "none",
+      "classification": "receiver prototype/debug",
+      "content_type": null,
+      "elapsed_ms": 0,
+      "error": "<urlopen error [Errno 1] Operation not permitted>",
+      "json_keys": [],
+      "method": "GET",
+      "name": "receiver_api_debug_report",
+      "note": null,
+      "ok": false,
+      "saved_response": null,
+      "status": null,
+      "url": "http://<redacted-ip>:8088/api/debug/report"
+    },
+    {
+      "body_kind": "none",
+      "classification": "receiver prototype/debug",
+      "content_type": null,
+      "elapsed_ms": 0,
+      "error": "<urlopen error [Errno 1] Operation not permitted>",
+      "json_keys": [],
+      "method": "GET",
+      "name": "receiver_api_debug_requests",
+      "note": null,
+      "ok": false,
+      "saved_response": null,
+      "status": null,
+      "url": "http://<redacted-ip>:8088/api/debug/requests"
+    },
+    {
+      "body_kind": "none",
+      "classification": "receiver prototype/debug",
+      "content_type": null,
+      "elapsed_ms": 0,
+      "error": "<urlopen error [Errno 1] Operation not permitted>",
+      "json_keys": [],
+      "method": "GET",
+      "name": "receiver_api_debug_uploads",
+      "note": null,
+      "ok": false,
+      "saved_response": null,
+      "status": null,
+      "url": "http://<redacted-ip>:8088/api/debug/uploads"
+    },
+    {
+      "body_kind": "none",
+      "classification": "receiver prototype/debug",
+      "content_type": null,
+      "elapsed_ms": 0,
+      "error": "<urlopen error [Errno 1] Operation not permitted>",
+      "json_keys": [],
+      "method": "GET",
+      "name": "receiver_api_debug_events",
+      "note": null,
+      "ok": false,
+      "saved_response": null,
+      "status": null,
+      "url": "http://<redacted-ip>:8088/api/debug/events"
+    },
+    {
+      "body_kind": "none",
+      "classification": "receiver prototype/debug",
+      "content_type": null,
+      "elapsed_ms": 0,
+      "error": "<urlopen error [Errno 1] Operation not permitted>",
+      "json_keys": [],
+      "method": "GET",
+      "name": "receiver_api_debug_fields",
+      "note": null,
+      "ok": false,
+      "saved_response": null,
+      "status": null,
+      "url": "http://<redacted-ip>:8088/api/debug/fields"
+    },
+    {
+      "body_kind": "none",
+      "classification": "receiver prototype/debug",
+      "content_type": null,
+      "elapsed_ms": 0,
+      "error": "<urlopen error [Errno 1] Operation not permitted>",
+      "json_keys": [],
+      "method": "GET",
+      "name": "receiver_api_debug_child-mode",
+      "note": null,
+      "ok": false,
+      "saved_response": null,
+      "status": null,
+      "url": "http://<redacted-ip>:8088/api/debug/child-mode"
+    },
+    {
+      "body_kind": "none",
+      "classification": "receiver camera-push contract",
+      "content_type": null,
+      "elapsed_ms": 0,
+      "error": "<urlopen error [Errno 1] Operation not permitted>",
+      "json_keys": [],
+      "method": "POST",
+      "name": "receiver_synthetic_heartbeat",
+      "note": "synthetic receiver contract test; creates/updates a test heartbeat row",
+      "ok": false,
+      "saved_response": null,
+      "status": null,
+      "url": "http://<redacted-ip>:8088/api/camera/heartBeat"
+    },
+    {
+      "body_kind": "none",
+      "classification": "receiver camera-push contract",
+      "content_type": null,
+      "elapsed_ms": 0,
+      "error": "<urlopen error [Errno 1] Operation not permitted>",
+      "json_keys": [],
+      "method": "POST",
+      "name": "receiver_synthetic_data_upload",
+      "note": "synthetic receiver contract test; sends zero counts to avoid changing totals",
+      "ok": false,
+      "saved_response": null,
+      "status": null,
+      "url": "http://<redacted-ip>:8088/api/camera/dataUpload"
+    },
+    {
+      "body_kind": "none",
+      "classification": "dashboard mirror/prototype",
+      "content_type": null,
+      "elapsed_ms": 0,
+      "error": "<urlopen error [Errno 1] Operation not permitted>",
+      "json_keys": [],
+      "method": "GET",
+      "name": "dashboard_health",
+      "note": null,
+      "ok": false,
+      "saved_response": null,
+      "status": null,
+      "url": "http://<redacted-ip>:8089/health"
+    },
+    {
+      "body_kind": "none",
+      "classification": "dashboard mirror/prototype",
+      "content_type": null,
+      "elapsed_ms": 0,
+      "error": "<urlopen error [Errno 1] Operation not permitted>",
+      "json_keys": [],
+      "method": "GET",
+      "name": "dashboard_api_camera-total",
+      "note": null,
+      "ok": false,
+      "saved_response": null,
+      "status": null,
+      "url": "http://<redacted-ip>:8089/api/camera-total"
+    },
+    {
+      "body_kind": "none",
+      "classification": "dashboard mirror/prototype",
+      "content_type": null,
+      "elapsed_ms": 0,
+      "error": "<urlopen error [Errno 1] Operation not permitted>",
+      "json_keys": [],
+      "method": "GET",
+      "name": "dashboard_api_dashboard_fleet",
+      "note": null,
+      "ok": false,
+      "saved_response": null,
+      "status": null,
+      "url": "http://<redacted-ip>:8089/api/dashboard/fleet"
+    },
+    {
+      "body_kind": "none",
+      "classification": "dashboard mirror/prototype",
+      "content_type": null,
+      "elapsed_ms": 0,
+      "error": "<urlopen error [Errno 1] Operation not permitted>",
+      "json_keys": [],
+      "method": "GET",
+      "name": "dashboard_api_dashboard_buses_B-101",
+      "note": null,
+      "ok": false,
+      "saved_response": null,
+      "status": null,
+      "url": "http://<redacted-ip>:8089/api/dashboard/buses/B-101"
+    },
+    {
+      "body_kind": "none",
+      "classification": "dashboard mirror/prototype",
+      "content_type": null,
+      "elapsed_ms": 0,
+      "error": "<urlopen error [Errno 1] Operation not permitted>",
+      "json_keys": [],
+      "method": "GET",
+      "name": "dashboard_api_dashboard_export.csv",
+      "note": null,
+      "ok": false,
+      "saved_response": null,
+      "status": null,
+      "url": "http://<redacted-ip>:8089/api/dashboard/export.csv"
+    }
+  ],
+  "field_verification": [
+    {
+      "field": "connectionType",
+      "group": "heartbeat_push_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "hostName",
+      "group": "heartbeat_push_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "hwPlatform",
+      "group": "heartbeat_push_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "ipAddress",
+      "group": "heartbeat_push_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "ipAddressMethod",
+      "group": "heartbeat_push_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "macAddress",
+      "group": "heartbeat_push_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "sn",
+      "group": "heartbeat_push_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "swRelease",
+      "group": "heartbeat_push_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "time",
+      "group": "heartbeat_push_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "timeZone",
+      "group": "heartbeat_push_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "attributes",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "avgStayTime",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "endTime",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "eventList",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "in",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "inAdult",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "inChild",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "len",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "out",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "outAdult",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "outChild",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "passby",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "passbyAdult",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "passbyChild",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "sn",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "startTime",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "time",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "total",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "turnback",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "turnbackAdult",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "turnbackChild",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "eventType",
+      "group": "attributes_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "height",
+      "group": "attributes_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "idIndex",
+      "group": "attributes_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "lineId",
+      "group": "attributes_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "personId",
+      "group": "attributes_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "stayTime",
+      "group": "attributes_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "timeStamp",
+      "group": "attributes_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "eventType",
+      "group": "event_list_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "height",
+      "group": "event_list_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "id",
+      "group": "event_list_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "stayTime",
+      "group": "event_list_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "timestamp",
+      "group": "event_list_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "enter",
+      "group": "private_display_response",
+      "status": "lab-only/private; not observed in this run"
+    },
+    {
+      "field": "leave",
+      "group": "private_display_response",
+      "status": "lab-only/private; not observed in this run"
+    },
+    {
+      "field": "pass",
+      "group": "private_display_response",
+      "status": "lab-only/private; not observed in this run"
+    },
+    {
+      "field": "return",
+      "group": "private_display_response",
+      "status": "lab-only/private; not observed in this run"
+    },
+    {
+      "field": "stay",
+      "group": "private_display_response",
+      "status": "lab-only/private; not observed in this run"
+    },
+    {
+      "field": "stayTimePerPerson",
+      "group": "private_display_response",
+      "status": "lab-only/private; not observed in this run"
+    },
+    {
+      "field": "age",
+      "group": "unsupported_without_future_evidence",
+      "status": "unsupported/removed"
+    },
+    {
+      "field": "gender",
+      "group": "unsupported_without_future_evidence",
+      "status": "unsupported/removed"
+    },
+    {
+      "field": "workcard",
+      "group": "unsupported_without_future_evidence",
+      "status": "unsupported/removed"
+    },
+    {
+      "field": "currentStay",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "data",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "data.avgStayTime",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "data.endTime",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "data.in",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "data.out",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "data.passby",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "data.startTime",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "data.time",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "data.turnback",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "info",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "info.height",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "info.id",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "info.status",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "info.staytime",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    }
+  ],
+  "generated_utc": "2026-07-03T08:09:15+00:00",
+  "inputs": {
+    "allow_reset": false,
+    "camera_base": "http://172.16.17.50",
+    "dashboard_base": "http://172.16.16.118:8089",
+    "include_private_camera_apis": false,
+    "observe_seconds": 0,
+    "receiver_base": "http://172.16.16.118:8088",
+    "redact": true
+  },
+  "observation_summary": {
+    "observe_seconds": 0,
+    "ran": false
+  }
+}

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bus Passenger Counter</title>
+  <style>
+    :root { color-scheme: light; --ink:#17201d; --muted:#66706c; --line:#d9dfdc; --green:#16734b; --red:#b43b35; --blue:#2867a8; --bg:#f4f6f5; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font-family:Inter,system-ui,sans-serif; font-size:14px; }
+    header { background:#fff; border-bottom:1px solid var(--line); padding:18px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+    h1 { margin:0; font-size:20px; }
+    .sub { color:var(--muted); margin-top:3px; }
+    main { max-width:1180px; margin:auto; padding:24px; }
+    .metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+    .metric { background:#fff; border:1px solid var(--line); border-radius:7px; padding:18px; min-height:112px; }
+    .label { color:var(--muted); font-weight:600; }
+    .value { font-size:34px; font-weight:700; margin-top:12px; }
+    .in .value { color:var(--green); } .out .value { color:var(--red); } .occupancy .value { color:var(--blue); }
+    section { margin-top:24px; }
+    h2 { font-size:16px; margin:0 0 10px; }
+    .table-wrap { background:#fff; border:1px solid var(--line); border-radius:7px; overflow:auto; }
+    table { border-collapse:collapse; width:100%; min-width:680px; }
+    th,td { text-align:left; padding:11px 14px; border-bottom:1px solid #e8ecea; white-space:nowrap; }
+    th { color:var(--muted); font-size:12px; background:#fafbfa; }
+    tr:last-child td { border-bottom:0; }
+    .status { display:inline-flex; align-items:center; gap:6px; font-weight:600; }
+    .dot { width:8px; height:8px; border-radius:50%; background:var(--red); }
+    .online .dot { background:var(--green); }
+    .empty { color:var(--muted); padding:24px; text-align:center; }
+    code { font-size:12px; }
+    @media (max-width:760px) { .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } header,main { padding:16px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div><h1>Bus Passenger Counter</h1><div class="sub">HX-CCD22 prototype</div></div>
+    <div id="updated" class="sub">Waiting for data</div>
+  </header>
+  <main>
+    <div class="metrics">
+      <div class="metric in"><div class="label">Entered today</div><div class="value" id="total-in">0</div></div>
+      <div class="metric out"><div class="label">Exited today</div><div class="value" id="total-out">0</div></div>
+      <div class="metric occupancy"><div class="label">Estimated occupancy</div><div class="value" id="occupancy">0</div></div>
+      <div class="metric"><div class="label">Devices online</div><div class="value" id="online">0 / 0</div></div>
+    </div>
+
+    <section>
+      <h2>Device health</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Serial number</th><th>Bus</th><th>Status</th><th>Last heartbeat</th><th>Last data</th></tr></thead>
+        <tbody id="devices"><tr><td colspan="5" class="empty">No camera connected yet</td></tr></tbody>
+      </table></div>
+    </section>
+
+    <section>
+      <h2>Recent count uploads</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Received</th><th>Serial number</th><th>In</th><th>Out</th><th>Pass by</th><th>Turn back</th><th>Statistics window</th></tr></thead>
+        <tbody id="recent"><tr><td colspan="7" class="empty">No count uploads yet</td></tr></tbody>
+      </table></div>
+    </section>
+  </main>
+  <script>
+    const fmt = value => value ? new Date(value * 1000).toLocaleString() : "Never";
+    const number = value => Number(value || 0).toLocaleString();
+    const escapeHtml = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    async function refresh() {
+      try {
+        const response = await fetch("/api/dashboard", {cache:"no-store"});
+        const data = await response.json();
+        document.querySelector("#total-in").textContent = number(data.total_in);
+        document.querySelector("#total-out").textContent = number(data.total_out);
+        document.querySelector("#occupancy").textContent = number(data.occupancy);
+        document.querySelector("#online").textContent = `${data.online_devices} / ${data.devices.length}`;
+        document.querySelector("#updated").textContent = `Updated ${new Date().toLocaleTimeString()}`;
+
+        document.querySelector("#devices").innerHTML = data.devices.length ? data.devices.map(device => `
+          <tr><td><code>${escapeHtml(device.sn)}</code></td><td>${escapeHtml(device.bus_name)}</td>
+          <td><span class="status ${device.online ? "online" : ""}"><i class="dot"></i>${device.online ? "Online" : "Offline"}</span></td>
+          <td>${fmt(device.last_heartbeat_at)}</td><td>${fmt(device.last_data_at)}</td></tr>`).join("") :
+          '<tr><td colspan="5" class="empty">No camera connected yet</td></tr>';
+
+        document.querySelector("#recent").innerHTML = data.recent.length ? data.recent.map(row => `
+          <tr><td>${fmt(row.received_at)}</td><td><code>${escapeHtml(row.sn)}</code></td>
+          <td>${number(row.in_count)}</td><td>${number(row.out_count)}</td>
+          <td>${number(row.passby_count)}</td><td>${number(row.turnback_count)}</td>
+          <td>${fmt(row.start_time)} to ${fmt(row.end_time)}</td></tr>`).join("") :
+          '<tr><td colspan="7" class="empty">No count uploads yet</td></tr>';
+      } catch (error) {
+        document.querySelector("#updated").textContent = "Backend unavailable";
+      }
+    }
+    refresh();
+    setInterval(refresh, 5000);
+  </script>
+</body>
+</html>

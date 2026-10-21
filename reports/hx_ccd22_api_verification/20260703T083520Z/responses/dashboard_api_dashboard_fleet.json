@@ -1,0 +1,29 @@
+{
+  "buses": [
+    {
+      "id": "B-101",
+      "last_update": "2026-07-03T14:05:20",
+      "name": "Prototype Bus",
+      "number": "101",
+      "path": "Lab validation",
+      "route": "Prototype route",
+      "status": "offline",
+      "totals": {
+        "in": 225,
+        "onboard": 2,
+        "out": 223,
+        "passby": 15,
+        "turnback": 115
+      }
+    }
+  ],
+  "totals": {
+    "in": 225,
+    "logical_cameras_online": 0,
+    "logical_cameras_total": 2,
+    "onboard": 2,
+    "out": 223,
+    "physical_devices_online": 0,
+    "physical_devices_total": 1
+  }
+}

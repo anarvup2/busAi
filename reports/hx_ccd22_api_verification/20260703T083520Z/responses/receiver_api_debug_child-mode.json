@@ -1,0 +1,215 @@
+{
+  "camera_explicit_adult_child_counts_seen": true,
+  "child_height_threshold_cm": 140,
+  "db_path": "hx_camera_audit.db",
+  "event_type_distribution": [
+    {
+      "event_type": 0,
+      "rows": 52
+    }
+  ],
+  "explicit_adult_child_totals": {
+    "in_adult": 52,
+    "in_child": 0,
+    "out_adult": 51,
+    "out_child": 0,
+    "passby_adult": 19,
+    "passby_child": 0,
+    "rows_with_explicit_adult_child": 75,
+    "turnback_adult": 6,
+    "turnback_child": 0,
+    "upload_rows": 75
+  },
+  "height_based_child_classification_possible": true,
+  "height_summary": {
+    "avg_height_cm": 165.7,
+    "inferred_adult_events": 52,
+    "inferred_child_events": 0,
+    "max_height_cm": 180,
+    "min_height_cm": 144,
+    "person_event_rows": 52,
+    "rows_with_height": 52
+  },
+  "observed_child_mode_fields": {
+    "attributes": [
+      "eventType",
+      "height",
+      "stayTime"
+    ],
+    "eventList": [],
+    "upload_records": [
+      "inAdult",
+      "inChild",
+      "outAdult",
+      "outChild",
+      "passbyAdult",
+      "passbyChild",
+      "turnbackAdult",
+      "turnbackChild"
+    ]
+  },
+  "recent_height_events": [
+    {
+      "event_id": 180338,
+      "event_type": 0,
+      "height_cm": 158,
+      "received_at": "2026-07-03T08:35:19+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 1000
+    },
+    {
+      "event_id": 180337,
+      "event_type": 0,
+      "height_cm": 157,
+      "received_at": "2026-07-03T08:35:19+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 2160
+    },
+    {
+      "event_id": 180336,
+      "event_type": 0,
+      "height_cm": 166,
+      "received_at": "2026-07-03T08:35:19+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 2560
+    },
+    {
+      "event_id": 180335,
+      "event_type": 0,
+      "height_cm": 154,
+      "received_at": "2026-07-03T08:35:19+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 2040
+    },
+    {
+      "event_id": 180332,
+      "event_type": 0,
+      "height_cm": 174,
+      "received_at": "2026-07-03T08:35:18+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 1840
+    },
+    {
+      "event_id": 180331,
+      "event_type": 0,
+      "height_cm": 163,
+      "received_at": "2026-07-03T08:35:18+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 1560
+    },
+    {
+      "event_id": 180330,
+      "event_type": 0,
+      "height_cm": 172,
+      "received_at": "2026-07-03T08:35:18+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 1640
+    },
+    {
+      "event_id": 180329,
+      "event_type": 0,
+      "height_cm": 172,
+      "received_at": "2026-07-03T08:35:17+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 1280
+    },
+    {
+      "event_id": 180324,
+      "event_type": 0,
+      "height_cm": 172,
+      "received_at": "2026-07-03T08:35:15+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 1920
+    },
+    {
+      "event_id": 180322,
+      "event_type": 0,
+      "height_cm": 154,
+      "received_at": "2026-07-03T08:35:14+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 1920
+    },
+    {
+      "event_id": 180320,
+      "event_type": 0,
+      "height_cm": 160,
+      "received_at": "2026-07-03T08:35:13+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 1800
+    },
+    {
+      "event_id": 180317,
+      "event_type": 0,
+      "height_cm": 148,
+      "received_at": "2026-07-03T08:35:10+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 1360
+    },
+    {
+      "event_id": 180316,
+      "event_type": 0,
+      "height_cm": 173,
+      "received_at": "2026-07-03T08:35:10+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 1360
+    },
+    {
+      "event_id": 180315,
+      "event_type": 0,
+      "height_cm": 177,
+      "received_at": "2026-07-03T08:35:10+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 1320
+    },
+    {
+      "event_id": 180313,
+      "event_type": 0,
+      "height_cm": 161,
+      "received_at": "2026-07-03T08:35:08+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 1440
+    },
+    {
+      "event_id": 180306,
+      "event_type": 0,
+      "height_cm": 150,
+      "received_at": "2026-07-03T08:35:07+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 2120
+    },
+    {
+      "event_id": 180300,
+      "event_type": 0,
+      "height_cm": 169,
+      "received_at": "2026-07-03T08:35:05+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 1400
+    },
+    {
+      "event_id": 180299,
+      "event_type": 0,
+      "height_cm": 158,
+      "received_at": "2026-07-03T08:35:04+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 1240
+    },
+    {
+      "event_id": 180297,
+      "event_type": 0,
+      "height_cm": 171,
+      "received_at": "2026-07-03T08:35:04+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 1280
+    },
+    {
+      "event_id": 180296,
+      "event_type": 0,
+      "height_cm": 172,
+      "received_at": "2026-07-03T08:35:03+00:00",
+      "sn": "<redacted>",
+      "stay_time_ms": 1200
+    }
+  ],
+  "recommendation": "Use camera-provided inAdult/outAdult/inChild/outChild fields.",
+  "server_time": "2026-07-03T08:35:21+00:00"
+}

@@ -1,0 +1,27 @@
+{
+  "age": {
+    "age10to16": 0,
+    "age17to30": 0,
+    "age31to45": 0,
+    "age46to60": 0,
+    "ageless10": 0,
+    "unknownAge": 201
+  },
+  "enter": 201,
+  "gender": {
+    "female": 0,
+    "male": 0,
+    "unkownGender": 201
+  },
+  "leave": 203,
+  "pass": 15,
+  "result": {
+    "code": "0",
+    "isError": "false",
+    "message": "Display data retrieved successfully"
+  },
+  "return": 105,
+  "stay": 0,
+  "stayTimePerPerson": 1.837443470954895,
+  "workcard": 0
+}

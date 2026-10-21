@@ -1,0 +1,874 @@
+{
+  "endpoint_results": [
+    {
+      "body_kind": "json",
+      "classification": "receiver prototype/debug",
+      "content_type": "application/json; charset=utf-8",
+      "elapsed_ms": 3,
+      "error": null,
+      "json_keys": [
+        "receiver_config",
+        "server_time",
+        "status"
+      ],
+      "method": "GET",
+      "name": "receiver_health",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/receiver_health.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8088/health"
+    },
+    {
+      "body_kind": "json",
+      "classification": "receiver prototype/debug",
+      "content_type": "application/json; charset=utf-8",
+      "elapsed_ms": 0,
+      "error": null,
+      "json_keys": [
+        "advertised_ip",
+        "bind_host",
+        "camera_endpoints",
+        "child_height_threshold_cm",
+        "data_mode",
+        "db_path",
+        "debug_endpoints",
+        "delayed_seconds",
+        "online_seconds",
+        "port",
+        "timezone_offset",
+        "upload_interval_minutes"
+      ],
+      "method": "GET",
+      "name": "receiver_api_config",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/receiver_api_config.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8088/api/config"
+    },
+    {
+      "body_kind": "json",
+      "classification": "receiver prototype/debug",
+      "content_type": "application/json; charset=utf-8",
+      "elapsed_ms": 3,
+      "error": null,
+      "json_keys": [
+        "all_time_totals",
+        "device",
+        "last_heartbeat_age_seconds",
+        "last_heartbeat_at",
+        "last_heartbeat_camera_time",
+        "last_upload_age_seconds",
+        "last_upload_at",
+        "latest_payload_summary",
+        "receiver_config",
+        "server_time",
+        "session",
+        "session_totals",
+        "status",
+        "totals"
+      ],
+      "method": "GET",
+      "name": "receiver_api_status_current",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/receiver_api_status_current.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8088/api/status/current"
+    },
+    {
+      "body_kind": "json",
+      "classification": "receiver prototype/debug",
+      "content_type": "application/json; charset=utf-8",
+      "elapsed_ms": 1,
+      "error": null,
+      "json_keys": [
+        "db_path",
+        "devices",
+        "latest_payload",
+        "server_time",
+        "totals"
+      ],
+      "method": "GET",
+      "name": "receiver_api_dashboard",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/receiver_api_dashboard.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8088/api/dashboard"
+    },
+    {
+      "body_kind": "json",
+      "classification": "receiver prototype/debug",
+      "content_type": "application/json; charset=utf-8",
+      "elapsed_ms": 3,
+      "error": null,
+      "json_keys": [
+        "capabilities_seen",
+        "latest_payload",
+        "observed_fields",
+        "server_time",
+        "summary"
+      ],
+      "method": "GET",
+      "name": "receiver_api_debug_report",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/receiver_api_debug_report.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8088/api/debug/report"
+    },
+    {
+      "body_kind": "json",
+      "classification": "receiver prototype/debug",
+      "content_type": "application/json; charset=utf-8",
+      "elapsed_ms": 1,
+      "error": null,
+      "json_keys": [
+        "requests"
+      ],
+      "method": "GET",
+      "name": "receiver_api_debug_requests",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/receiver_api_debug_requests.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8088/api/debug/requests"
+    },
+    {
+      "body_kind": "json",
+      "classification": "receiver prototype/debug",
+      "content_type": "application/json; charset=utf-8",
+      "elapsed_ms": 1,
+      "error": null,
+      "json_keys": [
+        "uploads"
+      ],
+      "method": "GET",
+      "name": "receiver_api_debug_uploads",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/receiver_api_debug_uploads.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8088/api/debug/uploads"
+    },
+    {
+      "body_kind": "json",
+      "classification": "receiver prototype/debug",
+      "content_type": "application/json; charset=utf-8",
+      "elapsed_ms": 1,
+      "error": null,
+      "json_keys": [
+        "events"
+      ],
+      "method": "GET",
+      "name": "receiver_api_debug_events",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/receiver_api_debug_events.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8088/api/debug/events"
+    },
+    {
+      "body_kind": "json",
+      "classification": "receiver prototype/debug",
+      "content_type": "application/json; charset=utf-8",
+      "elapsed_ms": 1,
+      "error": null,
+      "json_keys": [
+        "attributes",
+        "by_endpoint",
+        "eventList",
+        "upload_records"
+      ],
+      "method": "GET",
+      "name": "receiver_api_debug_fields",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/receiver_api_debug_fields.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8088/api/debug/fields"
+    },
+    {
+      "body_kind": "json",
+      "classification": "receiver prototype/debug",
+      "content_type": "application/json; charset=utf-8",
+      "elapsed_ms": 3,
+      "error": null,
+      "json_keys": [
+        "camera_explicit_adult_child_counts_seen",
+        "child_height_threshold_cm",
+        "db_path",
+        "event_type_distribution",
+        "explicit_adult_child_totals",
+        "height_based_child_classification_possible",
+        "height_summary",
+        "observed_child_mode_fields",
+        "recent_height_events",
+        "recommendation",
+        "server_time"
+      ],
+      "method": "GET",
+      "name": "receiver_api_debug_child-mode",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/receiver_api_debug_child-mode.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8088/api/debug/child-mode"
+    },
+    {
+      "body_kind": "json",
+      "classification": "receiver camera-push contract",
+      "content_type": "application/json; charset=utf-8",
+      "elapsed_ms": 6,
+      "error": null,
+      "json_keys": [
+        "code",
+        "data",
+        "msg"
+      ],
+      "method": "POST",
+      "name": "receiver_synthetic_heartbeat",
+      "note": "synthetic receiver contract test; creates/updates a test heartbeat row",
+      "ok": true,
+      "saved_response": "responses/receiver_synthetic_heartbeat.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8088/api/camera/heartBeat"
+    },
+    {
+      "body_kind": "json",
+      "classification": "receiver camera-push contract",
+      "content_type": "application/json; charset=utf-8",
+      "elapsed_ms": 10,
+      "error": null,
+      "json_keys": [
+        "code",
+        "data",
+        "msg"
+      ],
+      "method": "POST",
+      "name": "receiver_synthetic_data_upload",
+      "note": "synthetic receiver contract test; sends zero counts to avoid changing totals",
+      "ok": true,
+      "saved_response": "responses/receiver_synthetic_data_upload.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8088/api/camera/dataUpload"
+    },
+    {
+      "body_kind": "json",
+      "classification": "dashboard mirror/prototype",
+      "content_type": "application/json",
+      "elapsed_ms": 0,
+      "error": null,
+      "json_keys": [
+        "camera_online",
+        "last_camera_poll",
+        "poll_error",
+        "status"
+      ],
+      "method": "GET",
+      "name": "dashboard_health",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/dashboard_health.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8089/health"
+    },
+    {
+      "body_kind": "json",
+      "classification": "dashboard mirror/prototype",
+      "content_type": "application/json",
+      "elapsed_ms": 0,
+      "error": null,
+      "json_keys": [
+        "avg_stay_time_seconds",
+        "camera_ip",
+        "current_stay",
+        "display_endpoint",
+        "estimated_onboard",
+        "in",
+        "last_camera_poll",
+        "last_client_ip",
+        "last_heartbeat",
+        "last_heartbeat_device_time",
+        "last_poll_error",
+        "last_push_upload",
+        "last_sample_minute",
+        "last_sn",
+        "latest_push_payload",
+        "net_count",
+        "online",
+        "out",
+        "passby",
+        "poll_successes",
+        "push_messages",
+        "rtc_client_url",
+        "server_time",
+        "session_samples",
+        "source",
+        "stream_available",
+        "turnback",
+        "webrtc_url"
+      ],
+      "method": "GET",
+      "name": "dashboard_api_camera-total",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/dashboard_api_camera-total.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8089/api/camera-total"
+    },
+    {
+      "body_kind": "json",
+      "classification": "dashboard mirror/prototype",
+      "content_type": "application/json",
+      "elapsed_ms": 0,
+      "error": null,
+      "json_keys": [
+        "buses",
+        "totals"
+      ],
+      "method": "GET",
+      "name": "dashboard_api_dashboard_fleet",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/dashboard_api_dashboard_fleet.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8089/api/dashboard/fleet"
+    },
+    {
+      "body_kind": "json",
+      "classification": "dashboard mirror/prototype",
+      "content_type": "application/json",
+      "elapsed_ms": 0,
+      "error": null,
+      "json_keys": [
+        "cameras",
+        "capacity",
+        "id",
+        "name",
+        "number",
+        "path",
+        "route",
+        "session_samples",
+        "status",
+        "totals"
+      ],
+      "method": "GET",
+      "name": "dashboard_api_dashboard_buses_B-101",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/dashboard_api_dashboard_buses_B-101.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8089/api/dashboard/buses/B-101"
+    },
+    {
+      "body_kind": "text",
+      "classification": "dashboard mirror/prototype",
+      "content_type": "text/csv; charset=utf-8",
+      "elapsed_ms": 0,
+      "error": null,
+      "json_keys": [],
+      "method": "GET",
+      "name": "dashboard_api_dashboard_export.csv",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/dashboard_api_dashboard_export.csv.txt",
+      "status": 200,
+      "url": "http://<redacted-ip>:8089/api/dashboard/export.csv"
+    },
+    {
+      "body_kind": "json",
+      "classification": "lab-only/private diagnostic",
+      "content_type": "text/html; charset=ISO-8859-1",
+      "elapsed_ms": 8,
+      "error": null,
+      "json_keys": [
+        "age",
+        "enter",
+        "gender",
+        "leave",
+        "pass",
+        "result",
+        "return",
+        "stay",
+        "stayTimePerPerson",
+        "workcard"
+      ],
+      "method": "POST",
+      "name": "camera_display_data_get",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/camera_display_data_get.json",
+      "status": 200,
+      "url": "http://<redacted-ip>/api/passengerFlow/passengerFlowData/DisplayDataGet"
+    },
+    {
+      "body_kind": "json",
+      "classification": "lab-only/private diagnostic",
+      "content_type": "application/json",
+      "elapsed_ms": 17,
+      "error": null,
+      "json_keys": [
+        "code",
+        "msg"
+      ],
+      "method": "GET",
+      "name": "camera_webrtc_probe",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/camera_webrtc_probe.json",
+      "status": 200,
+      "url": "http://<redacted-ip>/media/webrtc?app=live&stream=camera&type=play"
+    },
+    {
+      "body_kind": "text",
+      "classification": "lab-only/private diagnostic",
+      "content_type": "application/javascript",
+      "elapsed_ms": 35,
+      "error": null,
+      "json_keys": [],
+      "method": "GET",
+      "name": "camera_rtc_client_js",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/camera_rtc_client_js.txt",
+      "status": 200,
+      "url": "http://<redacted-ip>/js/rtcClient.js"
+    },
+    {
+      "body_kind": "skipped",
+      "classification": "lab-only/private reset control",
+      "content_type": null,
+      "elapsed_ms": 0,
+      "error": null,
+      "json_keys": [],
+      "method": "POST",
+      "name": "camera_private_reset",
+      "note": "skipped because --allow-reset was not provided",
+      "ok": false,
+      "saved_response": null,
+      "status": null,
+      "url": "http://<redacted-ip>/api/passengerFlow/deviceManage/passengerFlowDataReset"
+    },
+    {
+      "body_kind": "json",
+      "classification": "receiver observation",
+      "content_type": "application/json; charset=utf-8",
+      "elapsed_ms": 2,
+      "error": null,
+      "json_keys": [
+        "attributes",
+        "by_endpoint",
+        "eventList",
+        "upload_records"
+      ],
+      "method": "GET",
+      "name": "observation_before_fields",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/observation_before_fields.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8088/api/debug/fields"
+    },
+    {
+      "body_kind": "json",
+      "classification": "receiver observation",
+      "content_type": "application/json; charset=utf-8",
+      "elapsed_ms": 32,
+      "error": null,
+      "json_keys": [
+        "attributes",
+        "by_endpoint",
+        "eventList",
+        "upload_records"
+      ],
+      "method": "GET",
+      "name": "observation_after_fields",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/observation_after_fields.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8088/api/debug/fields"
+    },
+    {
+      "body_kind": "json",
+      "classification": "receiver observation",
+      "content_type": "application/json; charset=utf-8",
+      "elapsed_ms": 1,
+      "error": null,
+      "json_keys": [
+        "requests"
+      ],
+      "method": "GET",
+      "name": "observation_after_recent_requests",
+      "note": null,
+      "ok": true,
+      "saved_response": "responses/observation_after_recent_requests.json",
+      "status": 200,
+      "url": "http://<redacted-ip>:8088/api/debug/requests"
+    }
+  ],
+  "field_verification": [
+    {
+      "field": "connectionType",
+      "group": "heartbeat_push_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "hostName",
+      "group": "heartbeat_push_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "hwPlatform",
+      "group": "heartbeat_push_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "ipAddress",
+      "group": "heartbeat_push_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "ipAddressMethod",
+      "group": "heartbeat_push_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "macAddress",
+      "group": "heartbeat_push_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "sn",
+      "group": "heartbeat_push_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "swRelease",
+      "group": "heartbeat_push_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "time",
+      "group": "heartbeat_push_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "timeZone",
+      "group": "heartbeat_push_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "attributes",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "avgStayTime",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "endTime",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "eventList",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "in",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "inAdult",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "inChild",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "len",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "out",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "outAdult",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "outChild",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "passby",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "passbyAdult",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "passbyChild",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "sn",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "startTime",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "time",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "total",
+      "group": "data_upload_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "turnback",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "turnbackAdult",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "turnbackChild",
+      "group": "data_upload_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "eventType",
+      "group": "attributes_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "height",
+      "group": "attributes_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "idIndex",
+      "group": "attributes_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "lineId",
+      "group": "attributes_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "personId",
+      "group": "attributes_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "stayTime",
+      "group": "attributes_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "timeStamp",
+      "group": "attributes_payload",
+      "status": "observed in receiver payloads"
+    },
+    {
+      "field": "eventType",
+      "group": "event_list_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "height",
+      "group": "event_list_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "id",
+      "group": "event_list_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "stayTime",
+      "group": "event_list_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "timestamp",
+      "group": "event_list_payload",
+      "status": "not observed in this run"
+    },
+    {
+      "field": "age",
+      "group": "private_display_response",
+      "status": "verified live"
+    },
+    {
+      "field": "enter",
+      "group": "private_display_response",
+      "status": "verified live"
+    },
+    {
+      "field": "gender",
+      "group": "private_display_response",
+      "status": "verified live"
+    },
+    {
+      "field": "leave",
+      "group": "private_display_response",
+      "status": "verified live"
+    },
+    {
+      "field": "pass",
+      "group": "private_display_response",
+      "status": "verified live"
+    },
+    {
+      "field": "result",
+      "group": "private_display_response",
+      "status": "verified live"
+    },
+    {
+      "field": "return",
+      "group": "private_display_response",
+      "status": "verified live"
+    },
+    {
+      "field": "stay",
+      "group": "private_display_response",
+      "status": "verified live"
+    },
+    {
+      "field": "stayTimePerPerson",
+      "group": "private_display_response",
+      "status": "verified live"
+    },
+    {
+      "field": "workcard",
+      "group": "private_display_response",
+      "status": "verified live"
+    },
+    {
+      "field": "currentStay",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "data",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "data.avgStayTime",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "data.endTime",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "data.in",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "data.out",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "data.passby",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "data.startTime",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "data.time",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "data.turnback",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "info",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "info.height",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "info.id",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "info.status",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    },
+    {
+      "field": "info.staytime",
+      "group": "vendor_documented_unobserved_payloads",
+      "status": "official vendor-documented but unobserved in this run"
+    }
+  ],
+  "generated_utc": "2026-07-03T08:37:21+00:00",
+  "inputs": {
+    "allow_reset": false,
+    "camera_base": "http://<redacted-ip>",
+    "dashboard_base": "http://<redacted-ip>:8089",
+    "include_private_camera_apis": true,
+    "observe_seconds": 120,
+    "receiver_base": "http://<redacted-ip>:8088",
+    "redact": true
+  },
+  "observation_summary": {
+    "after_fields_available": true,
+    "after_keys": "<redacted>",
+    "before_fields_available": true,
+    "before_keys": "<redacted>",
+    "observe_seconds": 120,
+    "ran": true,
+    "recent_requests_available": true
+  }
+}

@@ -1,0 +1,6 @@
+type,bus_id,camera_id,time,in,out,onboard,status
+bus,B-101,,2026-07-03T14:05:21,225,223,2,offline
+camera,B-101,B-101-front,2026-07-03T14:05:20,225,223,2,offline
+camera,B-101,B-101-rear,2026-07-03T14:05:20,225,223,2,offline
+sample,B-101,,2026-07-03T14:04:00,225,223,2,
+sample,B-101,,2026-07-03T14:05:00,225,223,2,

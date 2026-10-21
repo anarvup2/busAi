@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HX-CCD22 Integration Reference</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; background: #f8f7f4; color: #2c2c2a; font-size: 14px; line-height: 1.6; }
+  .page { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
+  h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  h2 { font-size: 16px; font-weight: 600; margin: 32px 0 12px; border-bottom: 1.5px solid #d3d1c7; padding-bottom: 6px; }
+  h3 { font-size: 14px; font-weight: 600; margin: 20px 0 8px; }
+  .subtitle { color: #5f5e5a; font-size: 13px; margin-bottom: 24px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .badge-green { background: #EAF3DE; color: #3B6D11; }
+  .badge-red { background: #FCEBEB; color: #A32D2D; }
+  .badge-blue { background: #E6F1FB; color: #185FA5; }
+  .badge-amber { background: #FAEEDA; color: #854F0B; }
+  .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; border-left: 3px solid; }
+  .alert-red { background: #FCEBEB; border-color: #E24B4A; color: #791F1F; }
+  .alert-green { background: #EAF3DE; border-color: #3B6D11; color: #3B6D11; }
+  .alert-blue { background: #E6F1FB; border-color: #185FA5; color: #0C447C; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .card { background: #fff; border: 1px solid #d3d1c7; border-radius: 10px; padding: 16px; }
+  .card h3 { margin-top: 0; }
+  pre { background: #1e1e1e; color: #d4d4d4; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 12px; line-height: 1.7; margin: 8px 0; }
+  .key { color: #9cdcfe; }
+  .str { color: #ce9178; }
+  .num { color: #b5cea8; }
+  .cmt { color: #6a9955; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+  th { background: #f1efe8; text-align: left; padding: 8px 12px; font-weight: 600; border-bottom: 1px solid #d3d1c7; }
+  td { padding: 8px 12px; border-bottom: 1px solid #e8e6de; vertical-align: top; }
+  .req { color: #E24B4A; font-weight: 600; font-size: 11px; }
+  .opt { color: #888780; font-size: 11px; }
+  .mono { font-family: 'Courier New', monospace; font-size: 12px; background: #f1efe8; padding: 1px 4px; border-radius: 3px; }
+  .section-num { display: inline-block; background: #2c2c2a; color: #fff; width: 22px; height: 22px; border-radius: 50%; text-align: center; line-height: 22px; font-size: 12px; font-weight: 700; margin-right: 8px; }
+  .flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+  .flow-box { background: #E6F1FB; color: #0C447C; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500; }
+  .flow-arrow { color: #888780; font-size: 18px; }
+  .tag { background: #EAF3DE; color: #3B6D11; padding: 1px 6px; border-radius: 3px; font-size: 11px; font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>HX-CCD22 Integration Reference</h1>
+  <p class="subtitle">Foorir 3D People Counter — Bus Version | For senior review</p>
+
+  <div class="alert alert-red">
+    <strong>Immediate action required:</strong> Camera is currently pushing to <code>op.foorir.com:8088</code> (Foorir's own cloud). 
+    Change Address1 in DeviceInfo &gt; HTTP to your own backend URL. This is the only config step to start receiving data.
+  </div>
+
+  <!-- SECTION 1: Device facts -->
+  <h2><span class="section-num">1</span>Device facts confirmed from live camera</h2>
+  <div class="grid3">
+    <div class="card">
+      <h3>Identity</h3>
+      <p><strong>IP:</strong> <span class="mono">172.16.17.50</span></p>
+      <p><strong>SN:</strong> <span class="mono">2100002507152593</span></p>
+      <p><strong>Model:</strong> HX-CCD22</p>
+    </div>
+    <div class="card">
+      <h3>Live counts (screenshots)</h3>
+      <p>In: 148 | Out: 147 | Stay: 3</p>
+      <p>Avg dwell: 1s</p>
+      <p>Heights detected: 180cm, 169cm</p>
+    </div>
+    <div class="card">
+      <h3>Windows client totals</h3>
+      <p>Enter: 273 | Leave: 280</p>
+      <p>Pass: 1890 | Return: 418</p>
+      <p>Total: 2163</p>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Data flow -->
+  <h2><span class="section-num">2</span>Data flow</h2>
+  <div class="flow">
+    <div class="flow-box">Camera (HX-CCD22)</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Bus router (4G/SIM)</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Internet</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Your backend API</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">PostgreSQL</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Dashboard</div>
+  </div>
+  <p style="color:#5f5e5a; font-size:13px;">The camera pushes data outbound. You do NOT poll the camera. You do NOT need a public IP on each bus. The bus router only needs outbound internet access.</p>
+
+  <!-- SECTION 3: Endpoints -->
+  <h2><span class="section-num">3</span>Two endpoints your backend must expose</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Heartbeat <span class="badge badge-green">every 1 min</span></h3>
+      <p style="font-size:13px; color:#5f5e5a;">Camera says "I'm alive". Track this to know which cameras are online/offline.</p>
+      <p style="margin:8px 0 4px;"><strong>POST</strong> <span class="mono">/api/camera/heartBeat</span></p>
+    </div>
+    <div class="card">
+      <h3>Data upload <span class="badge badge-blue">every 1-5 min</span></h3>
+      <p style="font-size:13px; color:#5f5e5a;">Camera sends passenger counts, event list, heights. Your main data source.</p>
+      <p style="margin:8px 0 4px;"><strong>POST</strong> <span class="mono">/api/camera/dataUpload</span></p>
+    </div>
+  </div>
+
+  <!-- SECTION 4: JSON Schemas -->
+  <h2><span class="section-num">4</span>Exact JSON schemas from API docs</h2>
+
+  <h3>4.1 — Heartbeat payload (camera sends this TO you)</h3>
+  <pre><code>{
+  <span class="key">"sn"</span>: <span class="str">"2100002507152593"</span>,   <span class="cmt">// device serial number — your primary key</span>
+  <span class="key">"time"</span>: <span class="num">1751234567</span>           <span class="cmt">// UNIX timestamp from camera clock</span>
+}</code></pre>
+
+  <h3>4.2 — Heartbeat response (you send this BACK to camera)</h3>
+  <p style="font-size:13px; color:#5f5e5a; margin-bottom:6px;">Critical: camera expects this response or it may retry. Return server time so camera can sync its clock.</p>
+  <pre><code>{
+  <span class="key">"code"</span>: <span class="num">0</span>,              <span class="cmt">// 0=success, 1=SN not found, 2=other error</span>
+  <span class="key">"msg"</span>: <span class="str">"success"</span>,
+  <span class="key">"data"</span>: {
+    <span class="key">"sn"</span>: <span class="str">"2100002507152593"</span>,
+    <span class="key">"time"</span>: <span class="num">1751234567</span>      <span class="cmt">// your server time — used by camera for time sync</span>
+  }
+}</code></pre>
+
+  <h3>4.3 — Data upload payload (camera sends this TO you)</h3>
+  <pre><code>{
+  <span class="key">"sn"</span>: <span class="str">"2100002507152593"</span>,
+  <span class="key">"startTime"</span>: <span class="num">1751230000</span>,     <span class="cmt">// stats window start</span>
+  <span class="key">"endTime"</span>: <span class="num">1751230300</span>,       <span class="cmt">// stats window end</span>
+  <span class="key">"time"</span>: <span class="num">1751234567</span>,          <span class="cmt">// camera timestamp</span>
+
+  <span class="cmt">// Core counts — ALWAYS present</span>
+  <span class="key">"in"</span>: <span class="num">5</span>,                    <span class="cmt">// total people who entered</span>
+  <span class="key">"out"</span>: <span class="num">4</span>,                   <span class="cmt">// total people who exited</span>
+  <span class="key">"passby"</span>: <span class="num">12</span>,               <span class="cmt">// passed through without stopping</span>
+  <span class="key">"turnback"</span>: <span class="num">1</span>,              <span class="cmt">// turned around / didn't cross line</span>
+  <span class="key">"avgStayTime"</span>: <span class="num">3000</span>,        <span class="cmt">// milliseconds average dwell time</span>
+
+  <span class="cmt">// Adult/child split — present only if child mode enabled in device settings</span>
+  <span class="key">"inAdult"</span>: <span class="num">4</span>,
+  <span class="key">"outAdult"</span>: <span class="num">3</span>,
+  <span class="key">"passbyAdult"</span>: <span class="num">10</span>,
+  <span class="key">"turnbackAdult"</span>: <span class="num">0</span>,
+  <span class="key">"inChild"</span>: <span class="num">1</span>,
+  <span class="key">"outChild"</span>: <span class="num">1</span>,
+  <span class="key">"passbyChild"</span>: <span class="num">2</span>,
+  <span class="key">"turnbackChild"</span>: <span class="num">1</span>,
+  <span class="key">"total"</span>: <span class="num">22</span>,
+
+  <span class="cmt">// Event list — one entry per person crossing the detection line</span>
+  <span class="key">"eventList"</span>: [
+    {
+      <span class="key">"id"</span>: <span class="num">5368</span>,               <span class="cmt">// sequential, resets on camera restart</span>
+      <span class="key">"timestamp"</span>: <span class="num">161231947237000000</span>, <span class="cmt">// microseconds</span>
+      <span class="key">"eventType"</span>: <span class="num">0</span>,           <span class="cmt">// 0=enter, 1=leave, 2=pass, 3=return | 100+x for child</span>
+      <span class="key">"height"</span>: <span class="num">180</span>,            <span class="cmt">// cm — this is what you saw in the debug screenshots</span>
+      <span class="key">"stayTime"</span>: <span class="num">1000</span>          <span class="cmt">// ms in camera view</span>
+    }
+  ]
+}</code></pre>
+
+  <h3>4.4 — Data upload response (you send this BACK)</h3>
+  <pre><code>{
+  <span class="key">"code"</span>: <span class="num">0</span>,
+  <span class="key">"msg"</span>: <span class="str">"success"</span>,
+  <span class="key">"data"</span>: {
+    <span class="key">"sn"</span>: <span class="str">"2100002507152593"</span>,
+    <span class="key">"time"</span>: <span class="num">1751234567</span>
+  }
+}</code></pre>
+
+  <div class="alert alert-blue" style="margin-top:16px;">
+    <strong>Child/adult split note:</strong> "Adult" and "child" are purely height-based, not age. The threshold is configured in device settings (filter height vs child height). 
+    From your screenshots, the camera is already detecting heights (180cm, 169cm, 163cm, 167cm visible in debug mode). Child mode needs to be explicitly enabled.
+  </div>
+
+  <!-- SECTION 5: Database Schema -->
+  <h2><span class="section-num">5</span>Database schema (PostgreSQL)</h2>
+
+  <h3>devices table</h3>
+  <table>
+    <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">id</td><td>UUID PK</td><td>internal ID</td></tr>
+      <tr><td class="mono">sn</td><td>VARCHAR(30) UNIQUE</td><td>camera serial number — foreign key for all lookups</td></tr>
+      <tr><td class="mono">bus_id</td><td>UUID FK</td><td>which bus this camera is on</td></tr>
+      <tr><td class="mono">door_position</td><td>ENUM('FRONT','REAR','SINGLE')</td><td>where on the bus</td></tr>
+      <tr><td class="mono">last_heartbeat_at</td><td>TIMESTAMPTZ</td><td>updated every heartbeat</td></tr>
+      <tr><td class="mono">last_data_at</td><td>TIMESTAMPTZ</td><td>updated every data upload</td></tr>
+      <tr><td class="mono">status</td><td>ENUM('ONLINE','OFFLINE')</td><td>computed from heartbeat gap</td></tr>
+      <tr><td class="mono">created_at</td><td>TIMESTAMPTZ</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h3>buses table</h3>
+  <table>
+    <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">id</td><td>UUID PK</td><td></td></tr>
+      <tr><td class="mono">bus_number</td><td>VARCHAR(20)</td><td>e.g. GJ01AB1234</td></tr>
+      <tr><td class="mono">registration_number</td><td>VARCHAR(20)</td><td></td></tr>
+      <tr><td class="mono">depot_name</td><td>VARCHAR(100)</td><td></td></tr>
+      <tr><td class="mono">route_name</td><td>VARCHAR(100)</td><td></td></tr>
+      <tr><td class="mono">status</td><td>VARCHAR(20)</td><td>ACTIVE / MAINTENANCE</td></tr>
+    </tbody>
+  </table>
+
+  <h3>heartbeats table</h3>
+  <table>
+    <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">id</td><td>BIGSERIAL PK</td><td></td></tr>
+      <tr><td class="mono">device_id</td><td>UUID FK</td><td>join to devices</td></tr>
+      <tr><td class="mono">sn</td><td>VARCHAR(30)</td><td>denormalized for fast lookup</td></tr>
+      <tr><td class="mono">camera_time</td><td>BIGINT</td><td>UNIX timestamp from camera</td></tr>
+      <tr><td class="mono">received_at</td><td>TIMESTAMPTZ</td><td>your server time</td></tr>
+      <tr><td class="mono">raw_payload</td><td>JSONB</td><td>full JSON for debugging</td></tr>
+    </tbody>
+  </table>
+
+  <h3>passenger_counts table — your main analytics table</h3>
+  <table>
+    <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">id</td><td>BIGSERIAL PK</td><td></td></tr>
+      <tr><td class="mono">device_id</td><td>UUID FK</td><td></td></tr>
+      <tr><td class="mono">bus_id</td><td>UUID FK</td><td>denormalized</td></tr>
+      <tr><td class="mono">door_position</td><td>VARCHAR(10)</td><td>FRONT / REAR</td></tr>
+      <tr><td class="mono">start_time</td><td>BIGINT</td><td>UNIX ts from camera</td></tr>
+      <tr><td class="mono">end_time</td><td>BIGINT</td><td>UNIX ts from camera</td></tr>
+      <tr><td class="mono">in_count</td><td>INT</td><td>people who entered</td></tr>
+      <tr><td class="mono">out_count</td><td>INT</td><td>people who exited</td></tr>
+      <tr><td class="mono">passby_count</td><td>INT</td><td></td></tr>
+      <tr><td class="mono">turnback_count</td><td>INT</td><td></td></tr>
+      <tr><td class="mono">avg_stay_time_ms</td><td>INT</td><td>milliseconds</td></tr>
+      <tr><td class="mono">in_adult</td><td>INT</td><td>NULL if child mode off</td></tr>
+      <tr><td class="mono">out_adult</td><td>INT</td><td>NULL if child mode off</td></tr>
+      <tr><td class="mono">in_child</td><td>INT</td><td>NULL if child mode off</td></tr>
+      <tr><td class="mono">out_child</td><td>INT</td><td>NULL if child mode off</td></tr>
+      <tr><td class="mono">total</td><td>INT</td><td>sum of all types</td></tr>
+      <tr><td class="mono">raw_payload</td><td>JSONB</td><td>full JSON — never delete this</td></tr>
+      <tr><td class="mono">received_at</td><td>TIMESTAMPTZ</td><td>your server time when you received it</td></tr>
+    </tbody>
+  </table>
+
+  <h3>person_events table — individual crossing events</h3>
+  <table>
+    <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">id</td><td>BIGSERIAL PK</td><td></td></tr>
+      <tr><td class="mono">device_id</td><td>UUID FK</td><td></td></tr>
+      <tr><td class="mono">bus_id</td><td>UUID FK</td><td>denormalized</td></tr>
+      <tr><td class="mono">camera_event_id</td><td>BIGINT</td><td>id field from eventList</td></tr>
+      <tr><td class="mono">event_timestamp_us</td><td>BIGINT</td><td>microsecond timestamp</td></tr>
+      <tr><td class="mono">event_type</td><td>INT</td><td>0=enter 1=leave 2=pass 3=return (100+ for child)</td></tr>
+      <tr><td class="mono">height_cm</td><td>INT</td><td>detected person height</td></tr>
+      <tr><td class="mono">stay_time_ms</td><td>INT</td><td>milliseconds in camera view</td></tr>
+      <tr><td class="mono">is_child</td><td>BOOLEAN</td><td>true if event_type >= 100</td></tr>
+      <tr><td class="mono">received_at</td><td>TIMESTAMPTZ</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 6: Config that matters -->
+  <h2><span class="section-num">6</span>Camera config parameters that affect data quality</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Height (critical)</h3>
+      <p style="font-size:13px;">Must match actual installation height within ±5cm. If wrong, counts will be off. Bus version supports up to 3.0m (covers 7.14m width).</p>
+    </div>
+    <div class="card">
+      <h3>Filter height (recommended: 100-120cm)</h3>
+      <p style="font-size:13px;">Objects below this are ignored. Prevents luggage, bags from being counted. Set this before you trust any counts.</p>
+    </div>
+    <div class="card">
+      <h3>Detection area (red box)</h3>
+      <p style="font-size:13px;">Must cover only the door ground area. Too wide = counts people sitting in seats. Draw it carefully.</p>
+    </div>
+    <div class="card">
+      <h3>Detection line (green line)</h3>
+      <p style="font-size:13px;">Should be centered in the detection area. Direction of arrow = "enter" direction. This is what makes in vs out.</p>
+    </div>
+    <div class="card">
+      <h3>Child mode</h3>
+      <p style="font-size:13px;">Off by default. Enable in settings. Child = height between filter threshold and child threshold. Height-based only, not actual age.</p>
+    </div>
+    <div class="card">
+      <h3>Upload interval</h3>
+      <p style="font-size:13px;">Set to 1 or 5 minutes. 0 = real-time. For 2000 buses at 1 min = 2000 POST requests/min to your backend. Design accordingly.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 7: MVP build order -->
+  <h2><span class="section-num">7</span>What to build — MVP order</h2>
+  <div class="alert alert-green">
+    Your senior asked for a "basic dashboard." This is the exact sequence to prove the pipeline before building anything fancy.
+  </div>
+
+  <h3>Phase 1 — Backend (build first, no UI)</h3>
+  <ol style="padding-left:20px; font-size:13px; line-height:2;">
+    <li>FastAPI or Node.js endpoint: <span class="mono">POST /api/camera/heartBeat</span> — store, respond correctly</li>
+    <li>FastAPI or Node.js endpoint: <span class="mono">POST /api/camera/dataUpload</span> — store raw payload + normalized counts</li>
+    <li>Map SN to bus (manual lookup table for now)</li>
+    <li>Change camera config from <span class="mono">op.foorir.com:8088</span> to your local/ngrok URL</li>
+    <li>Confirm first real payload is received and stored</li>
+  </ol>
+
+  <h3>Phase 2 — Dashboard screens (build in this order)</h3>
+  <table>
+    <thead><tr><th>Screen</th><th>What to show</th><th>Priority</th></tr></thead>
+    <tbody>
+      <tr><td>Fleet overview</td><td>Total cameras, online/offline count, total in/out today</td><td><span class="badge badge-red">P0</span></td></tr>
+      <tr><td>Device health</td><td>SN, bus, last heartbeat, status. For 2000 buses this is more valuable than analytics.</td><td><span class="badge badge-red">P0</span></td></tr>
+      <tr><td>Bus detail</td><td>Front door in/out, rear door in/out, combined total, hourly chart</td><td><span class="badge badge-blue">P1</span></td></tr>
+      <tr><td>Raw payload viewer</td><td>Latest JSON from each camera. Not optional. Saves hours when debugging.</td><td><span class="badge badge-blue">P1</span></td></tr>
+      <tr><td>Route analytics</td><td>Aggregate across buses on same route</td><td><span class="badge badge-amber">P2</span></td></tr>
+      <tr><td>Adult/child split</td><td>Only meaningful after child mode is configured per device</td><td><span class="badge badge-amber">P2</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 8: Tech stack -->
+  <h2><span class="section-num">8</span>Recommended tech stack</h2>
+  <div class="grid3">
+    <div class="card">
+      <h3>Backend API</h3>
+      <p style="font-size:13px;">FastAPI (Python) — fast to build, async, easy Pydantic validation of incoming payloads.</p>
+    </div>
+    <div class="card">
+      <h3>Database</h3>
+      <p style="font-size:13px;">PostgreSQL + TimescaleDB extension for time-series queries on passenger_counts at scale.</p>
+    </div>
+    <div class="card">
+      <h3>Dashboard</h3>
+      <p style="font-size:13px;">React + Recharts. Or Grafana on top of PostgreSQL for a fast MVP without building UI from scratch.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 9: Honest risks -->
+  <h2><span class="section-num">9</span>Real risks to tell your senior — do not sugarcoat these</h2>
+  <table>
+    <thead><tr><th>Risk</th><th>Impact</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr><td>Counting accuracy depends on physical installation</td><td>Wrong height or detection area = wrong counts every time</td><td>Commissioning checklist per bus. Validate counts manually on 5 buses first.</td></tr>
+      <tr><td>Bus internet is unreliable</td><td>Missed heartbeats, delayed uploads, duplicate uploads</td><td>Design backend with idempotency keys. Store raw_payload. Handle timestamps carefully.</td></tr>
+      <tr><td>No bulk config API</td><td>Each of 2000 cameras needs to be configured individually</td><td>Standardize HTTP config. Write a checklist. Budget human time for commissioning.</td></tr>
+      <tr><td>Camera resets counters at midnight</td><td>Incomplete day data if timestamps are not handled properly</td><td>Use event list, not running totals. Always store raw payload.</td></tr>
+      <tr><td>Adult/child is height-based</td><td>A short adult counts as child. Cannot detect actual age.</td><td>Label it "height-based category" in the dashboard, not "adult/child".</td></tr>
+      <tr><td>SN: In/Out direction depends on correct arrow direction config</td><td>If arrow direction is wrong, "in" and "out" are swapped</td><td>Validate direction config on each camera during install.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Footer -->
+  <div style="margin-top:32px; padding-top:16px; border-top:1px solid #d3d1c7; font-size:12px; color:#888780;">
+    Reference compiled from: HX-CCD22 User Manual v2025-1.3 | 3D People Counter API v1.9 | Live camera screenshots (2026-06-23) | PassengerFlowClient V3.5.16
+  </div>
+</div>
+</body>
+</html>

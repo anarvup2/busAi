@@ -1,0 +1,80 @@
+{
+  "cameras": [
+    {
+      "door_position": "FRONT",
+      "heartbeat_age_seconds": null,
+      "id": "B-101-front",
+      "in": 225,
+      "include_in_aggregation": true,
+      "ip": "<redacted-ip>",
+      "label": "Front door",
+      "last_count_update": "2026-07-03T14:05:20",
+      "last_heartbeat": null,
+      "net": 2,
+      "onboard": 2,
+      "out": 223,
+      "passby": 15,
+      "physical_source_id": "hx-primary",
+      "prototype_mirror": false,
+      "rtc_client_url": "http://<redacted-ip>/js/rtcClient.js",
+      "sn": "<redacted>",
+      "status": "offline",
+      "stay": 0,
+      "stream_available": true,
+      "turnback": 115,
+      "webrtc_url": "http://<redacted-ip>/media/webrtc?app=live&stream=camera&type=play"
+    },
+    {
+      "door_position": "REAR",
+      "heartbeat_age_seconds": null,
+      "id": "B-101-rear",
+      "in": 225,
+      "include_in_aggregation": false,
+      "ip": "<redacted-ip>",
+      "label": "Rear door",
+      "last_count_update": "2026-07-03T14:05:20",
+      "last_heartbeat": null,
+      "net": 2,
+      "onboard": 2,
+      "out": 223,
+      "passby": 15,
+      "physical_source_id": "hx-primary",
+      "prototype_mirror": true,
+      "rtc_client_url": "http://<redacted-ip>/js/rtcClient.js",
+      "sn": "<redacted>",
+      "status": "offline",
+      "stay": 0,
+      "stream_available": true,
+      "turnback": 115,
+      "webrtc_url": "http://<redacted-ip>/media/webrtc?app=live&stream=camera&type=play"
+    }
+  ],
+  "capacity": 65,
+  "id": "B-101",
+  "name": "Prototype Bus",
+  "number": "101",
+  "path": "Lab validation",
+  "route": "Prototype route",
+  "session_samples": [
+    {
+      "in": 225,
+      "onboard": 2,
+      "out": 223,
+      "time": "2026-07-03T14:04:00"
+    },
+    {
+      "in": 225,
+      "onboard": 2,
+      "out": 223,
+      "time": "2026-07-03T14:05:00"
+    }
+  ],
+  "status": "offline",
+  "totals": {
+    "in": 225,
+    "onboard": 2,
+    "out": 223,
+    "passby": 15,
+    "turnback": 115
+  }
+}

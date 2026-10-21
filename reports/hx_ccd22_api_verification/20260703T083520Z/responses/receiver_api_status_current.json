@@ -1,0 +1,88 @@
+{
+  "all_time_totals": {
+    "estimated_onboard": 1,
+    "in": 52,
+    "last_upload_at": "2026-07-03T08:35:20+00:00",
+    "out": 51,
+    "passby": 19,
+    "turnback": 6,
+    "upload_rows": 75
+  },
+  "device": {
+    "first_seen_at": "2026-07-03T08:34:34+00:00",
+    "heartbeat_count": 1,
+    "last_client_ip": "<redacted-ip>",
+    "last_seen_at": "2026-07-03T08:35:20+00:00",
+    "sn": "<redacted>",
+    "upload_count": 75
+  },
+  "last_heartbeat_age_seconds": 20,
+  "last_heartbeat_at": "2026-07-03T08:35:00+00:00",
+  "last_heartbeat_camera_time": 1783067673,
+  "last_upload_age_seconds": 0,
+  "last_upload_at": "2026-07-03T08:35:20+00:00",
+  "latest_payload_summary": {
+    "attributes_count": 0,
+    "client_ip": "<redacted-ip>",
+    "endpoint": "/api/camera/dataUpload",
+    "eventList_count": 0,
+    "in": 0,
+    "out": 0,
+    "passby": 0,
+    "received_at": "2026-07-03T08:35:20+00:00",
+    "sn": "<redacted>",
+    "turnback": 0
+  },
+  "receiver_config": {
+    "advertised_ip": "<redacted-ip>",
+    "bind_host": "<redacted-ip>",
+    "camera_endpoints": {
+      "data_upload": "/api/camera/dataUpload",
+      "heartbeat": "/api/camera/heartBeat"
+    },
+    "child_height_threshold_cm": 140,
+    "data_mode": "Add",
+    "db_path": "hx_camera_audit.db",
+    "debug_endpoints": {
+      "child_mode": "/api/debug/child-mode",
+      "current_status": "/api/status/current",
+      "dashboard": "/api/dashboard",
+      "data_catalog": "/api/debug/data-catalog",
+      "events": "/api/debug/events",
+      "fields": "/api/debug/fields",
+      "health": "/health",
+      "integration_proof": "/api/debug/integration-proof",
+      "report": "/api/debug/report",
+      "requests": "/api/debug/requests",
+      "schema": "/api/debug/schema",
+      "session": "/api/debug/session",
+      "session_reset": "/api/debug/session-reset",
+      "uploads": "/api/debug/uploads"
+    },
+    "delayed_seconds": 180,
+    "online_seconds": 90,
+    "port": 8088,
+    "timezone_offset": 5.5,
+    "upload_interval_minutes": 1
+  },
+  "server_time": "2026-07-03T08:35:20+00:00",
+  "session": null,
+  "session_totals": {
+    "estimated_onboard": 1,
+    "in": 52,
+    "last_upload_at": "2026-07-03T08:35:20+00:00",
+    "out": 51,
+    "passby": 19,
+    "turnback": 6,
+    "upload_rows": 75
+  },
+  "status": "online",
+  "totals": {
+    "estimated_onboard": 1,
+    "in": 52,
+    "out": 51,
+    "passby": 19,
+    "turnback": 6,
+    "upload_rows": 75
+  }
+}

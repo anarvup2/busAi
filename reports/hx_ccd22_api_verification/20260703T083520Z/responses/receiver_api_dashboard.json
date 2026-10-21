@@ -1,0 +1,55 @@
+{
+  "db_path": "hx_camera_audit.db",
+  "devices": [
+    {
+      "first_seen_at": "2026-07-03T08:34:34+00:00",
+      "heartbeat_count": 1,
+      "last_client_ip": "<redacted-ip>",
+      "last_seen_at": "2026-07-03T08:35:20+00:00",
+      "sn": "<redacted>",
+      "upload_count": 75
+    }
+  ],
+  "latest_payload": {
+    "client_ip": "<redacted-ip>",
+    "endpoint": "/api/camera/dataUpload",
+    "payload": {
+      "avgStayTime": 0,
+      "connectionType": "Wired",
+      "endTime": 1782730980,
+      "hostName": "CAM-0",
+      "hwPlatform": "V5.0",
+      "in": 0,
+      "inAdult": 0,
+      "inChild": 0,
+      "ipAddress": "<redacted>",
+      "ipAddressMethod": "<redacted>",
+      "len": 0,
+      "macAddress": "<redacted>",
+      "out": 0,
+      "outAdult": 0,
+      "outChild": 0,
+      "passby": 0,
+      "passbyAdult": 0,
+      "passbyChild": 0,
+      "sn": "<redacted>",
+      "startTime": 1782730920,
+      "swRelease": "V7.2.5.5-V5-22-GJ",
+      "time": 1782730920,
+      "timeZone": -5,
+      "turnback": 0,
+      "turnbackAdult": 0,
+      "turnbackChild": 0
+    },
+    "received_at": "2026-07-03T08:35:20+00:00"
+  },
+  "server_time": "2026-07-03T08:35:20+00:00",
+  "totals": {
+    "estimated_onboard": 1,
+    "in_total": 52,
+    "out_total": 51,
+    "passby_total": 19,
+    "turnback_total": 6,
+    "upload_rows": 75
+  }
+}
